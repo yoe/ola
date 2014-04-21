@@ -5,7 +5,7 @@ AUX_DIST                = $(auxdir)/install-sh $(auxdir)/missing \
 include aminclude.am
 
 SUBDIRS = include data protoc common ola plugins slp olad python tools \
-          examples debian java man doxygen
+          examples java man doxygen
 
 # We want to build the python code when running distcheck.
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-python-libs

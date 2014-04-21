@@ -639,7 +639,6 @@ AC_CONFIG_FILES([Makefile
                  common/web/Makefile
                  data/Makefile
                  data/rdm/Makefile
-                 debian/Makefile
                  doxygen/Makefile
                  doxygen/examples/Makefile
                  examples/Makefile
