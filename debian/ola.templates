@@ -6,5 +6,3 @@ Description: Do you want to start the OLA daemon at boot time?
  .
  You have the option of starting the OLA daemon automatically on
  system boot.
- .
- This setting can be modified later by running 'dpkg-reconfigure ola'.
