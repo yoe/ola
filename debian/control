@@ -1,7 +1,7 @@
 Source: ola
 Priority: extra
 Maintainer: RenZO <renzo@imaginux.com>
-Build-Depends: debhelper (>= 7), autotools-dev, bash-completion
+Build-Depends: debhelper (>= 9), autotools-dev, dh-autoreconf, bash-completion, libcppunit-dev, bison, flex, pkg-config, uuid-dev, python, python-protobuf, libprotobuf-dev, protobuf-compiler, libprotoc-dev
 Standards-Version: 3.9.1
 Section: libs
 Vcs-Git: https://github.com/OpenLightingProject/ola.git
