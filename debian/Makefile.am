@@ -3,7 +3,6 @@ EXTRA_DIST = changelog \
              compat \
              control \
              copyright \
-             dirs \
              Makefile \
              Makefile.am \
              Makefile.in \
