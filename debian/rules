@@ -29,6 +29,10 @@ endif
 version=2.0.5
 major=2
 
+override_dh_auto_clean:
+	chmod +x version.sh
+	chmod +x doxygen/copy-doc.sh
+	dh_auto_clean
 override_dh_auto_configure:
 	./configure $(CROSS) --enable-python-libs --enable-rdm-tests --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info CFLAGS="$(CFLAGS)"
 
