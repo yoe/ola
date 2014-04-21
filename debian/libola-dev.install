@@ -1,6 +1,6 @@
 usr/include/*
-usr/lib/pkgconfig/*
-usr/lib/libola*.so
-usr/lib/libola*.a
-usr/lib/olad/libola*.so
-usr/lib/olad/libola*.a
+usr/lib/*/pkgconfig/*
+usr/lib/*/libola*.so
+usr/lib/*/libola*.a
+usr/lib/*/olad/libola*.so
+usr/lib/*/olad/libola*.a
