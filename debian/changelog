@@ -9,6 +9,7 @@ ola (0.9.0-2) UNRELEASED; urgency=medium
   * debian/ola.templates: don't state the obvious about dpkg-reconfigure
   * libola1: split off from ola, contains libraries only in multiarch-compliant
     paths
+  * debian/ola.postinst: add --home parameter to adduser invocation
 
  -- Wouter Verhelst <wouter@debian.org>  Mon, 21 Apr 2014 08:23:41 +0200
 
