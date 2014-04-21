@@ -4,8 +4,8 @@ Maintainer: RenZO <renzo@imaginux.com>
 Build-Depends: debhelper (>= 9), autotools-dev, dh-autoreconf, bash-completion, libcppunit-dev, bison, flex, pkg-config, uuid-dev, python, python-protobuf, libprotobuf-dev, protobuf-compiler, libprotoc-dev, libusb-1.0-0-dev, libftdi-dev, liblo-dev, libslp-dev, libmicrohttpd-dev
 Standards-Version: 3.9.1
 Section: libs
-Vcs-Git: https://github.com/OpenLightingProject/ola.git
-Vcs-browser: https://github.com/OpenLightingProject/ola
+Vcs-Git: https://github.com/yoe/ola
+Vcs-browser: https://github.com/yoe/ola
 Homepage: https://www.openlighting.org/
 
 Package: libola-dev
