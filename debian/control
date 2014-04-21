@@ -55,8 +55,7 @@ Description: Open Lighting Architecture - RDM Responder Tests
  The Open Lighting Architecture (OLA) provides a plugin framework for
  distributing DMX512 control signals on Mac and Linux.
  .
- This package contains a few tests for communication between the OLA
- daemon and RDM devices.
+ This package provides an automated way to check implementations of RDM.
 
 Package: ola
 Section: electronics
