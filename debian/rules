@@ -31,3 +31,6 @@ major=2
 
 override_dh_auto_configure:
 	./configure $(CROSS) --enable-python-libs --enable-rdm-tests --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info CFLAGS="$(CFLAGS)"
+
+override_dh_installinit:
+	dh_installinit --name=olad
