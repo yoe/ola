@@ -12,29 +12,12 @@
 %:
 	dh $@ --with autotools_dev,autoreconf,bash_completion
 
-# These are used for cross-compiling and for saving the configure script
-# from having to guess our platform (since we know it already)
-DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
-ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
-CROSS= --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)
-else
-CROSS= --build $(DEB_BUILD_GNU_TYPE)
-endif
-
-
-
-
-# shared library versions, option 1
-version=2.0.5
-major=2
-
 override_dh_autoreconf:
 	chmod +x version.sh
 	chmod +x doxygen/copy-doc.sh
 	dh_autoreconf
 override_dh_auto_configure:
-	./configure $(CROSS) --enable-python-libs --enable-rdm-tests --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info CFLAGS="$(CFLAGS)"
+	dh_auto_configure -- --enable-python-libs --enable-rdm-tests
 
 override_dh_installinit:
 	dh_installinit -p ola --name=olad
