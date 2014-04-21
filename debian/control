@@ -8,36 +8,55 @@ Vcs-Git: https://github.com/OpenLightingProject/ola.git
 Vcs-browser: https://github.com/OpenLightingProject/ola
 Homepage: https://github.com/OpenLightingProject/ola
 
-Package: ola-dev
+Package: libola-dev
 Section: libdevel
 Architecture: any
 Depends: ola (= ${binary:Version}), ${misc:Depends}
-Description: Open Lighting Architecture
+Description: Open Lighting Architecture - development libraries
+ The DMX512 standard for Digital MultipleX is used for digital
+ communication networks commonly used to control stage lighting and
+ effects.
+ .
  The Open Lighting Architecture (OLA) provides a plugin framework for
  distributing DMX512 control signals on Mac and Linux.
  .
- OLA is written and maintained by Simon Newton <nomis52@gmail.com>
+ This package contains the development files for libola and various related
+ libraries, used to write plugins or control the OLA daemon.
 
 Package: ola-python
 Section: libs
 Architecture: all
 Depends: ola (= ${binary:Version}), ${python:Depends}, ${misc:Depends}, python-protobuf
-Description: OLA Python Classes
+Description: Open Lighting Architecture - Python Classes
+ The DMX512 standard for Digital MultipleX is used for digital
+ communication networks commonly used to control stage lighting and
+ effects.
+ .
  The Open Lighting Architecture (OLA) provides a plugin framework for
  distributing DMX512 control signals on Mac and Linux.
  .
- OLA is written and maintained by Simon Newton <nomis52@gmail.com>
+ This package contains the files required for plugins or to control the OLA
+ daemon from python.
 
 Package: ola-rdm-tests
 Section: libs
 Architecture: all
 Depends: ola (= ${binary:Version}), ola-python (= ${binary:Version}), ${python:Depends}, ${misc:Depends}
 Suggests: bash-completion
-Description: OLA RDM Responder Tests
+Description: Open Lighting Architecture - RDM Responder Tests
+ The DMX512 standard for Digital MultipleX is used for digital
+ communication networks commonly used to control stage lighting and
+ effects.
+ .
+ The Remote Device Management protocol is an extension to DMX512,
+ allowing bi-directional communication between RDM-compliant devices
+ without disturbing other devices on the same connection.
+ .
  The Open Lighting Architecture (OLA) provides a plugin framework for
  distributing DMX512 control signals on Mac and Linux.
  .
- OLA is written and maintained by Simon Newton <nomis52@gmail.com>
+ This package contains a few tests for communication between the OLA
+ daemon and RDM devices.
 
 Package: ola
 Section: electronics
@@ -45,7 +64,12 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, adduser
 Suggests: bash-completion
 Description: Open Lighting Architecture
+ The DMX512 standard for Digital MultipleX is used for digital
+ communication networks commonly used to control stage lighting and
+ effects.
+ .
  The Open Lighting Architecture (OLA) provides a plugin framework for
  distributing DMX512 control signals on Mac and Linux.
  .
- OLA is written and maintained by Simon Newton <nomis52@gmail.com>
+ This package contains olad, the OLA daemon used to control lighthing,
+ and a number of command-line tools to control and manipulate olad.
