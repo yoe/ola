@@ -73,3 +73,18 @@ Description: Open Lighting Architecture
  .
  This package contains olad, the OLA daemon used to control lighthing,
  and a number of command-line tools to control and manipulate olad.
+
+Package: libola1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Open Lighting Architecture - shared libraries
+ The DMX512 standard for Digital MultipleX is used for digital
+ communication networks commonly used to control stage lighting and
+ effects.
+ .
+ The Open Lighting Architecture (OLA) provides a plugin framework for
+ distributing DMX512 control signals on Mac and Linux.
+ .
+ This package contains the shared libraries required to communicate with
+ olad.
