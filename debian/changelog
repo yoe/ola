@@ -1,3 +1,13 @@
+ola (0.9.0-3) UNRELEASED; urgency=medium
+
+  * debian/a.olad.init: implement force-reload
+  * debian/changelog: fix trailer format of older changelog entry
+  * debian/ola-python.install: remove brace expression
+  * debian/ola.lintian-overrides: add, overriding two javascript-missing-source
+    false positives
+
+ -- Wouter Verhelst <wouter@debian.org>  Tue, 22 Apr 2014 19:31:57 +0200
+
 ola (0.9.0-2) unstable; urgency=medium
 
   * Upload to Debian. Closes: #745385.
