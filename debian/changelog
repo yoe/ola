@@ -1,6 +1,7 @@
 ola (0.9.0-4) UNRELEASED; urgency=medium
 
-  * debian/a.olad.init: implement force-reload
+  * debian/ola.olad.init: implement force-reload
+  * debian/ola-rdm-server.rdm_test_server.init: same
   * debian/changelog: fix trailer format of older changelog entry
   * debian/ola-python.install: remove brace expression
   * debian/ola.lintian-overrides: add, overriding two javascript-missing-source
