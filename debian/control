@@ -42,7 +42,7 @@ Description: Open Lighting Architecture - Python Classes
 Package: ola-rdm-tests
 Section: libs
 Architecture: all
-Depends: ola (= ${binary:Version}), ola-python (= ${binary:Version}), ${python:Depends}, ${misc:Depends}
+Depends: ola (= ${binary:Version}), ola-python (= ${binary:Version}), ${python:Depends}, ${misc:Depends}, libjs-jquery, libjs-jquery-ui
 Suggests: bash-completion
 Description: Open Lighting Architecture - RDM Responder Tests
  The DMX512 standard for Digital MultipleX is used for digital

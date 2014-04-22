@@ -1,12 +1,15 @@
-ola (0.9.0-3) UNRELEASED; urgency=medium
+ola (0.9.0-4) UNRELEASED; urgency=medium
 
   * debian/a.olad.init: implement force-reload
   * debian/changelog: fix trailer format of older changelog entry
   * debian/ola-python.install: remove brace expression
   * debian/ola.lintian-overrides: add, overriding two javascript-missing-source
     false positives
+  * tools/rdm/static/rdmtest.html, debian/ola-rdm-tests.link: don't use
+    shipped/minified version of jquery, instead use Debian-packaged
+    versions by using symlinks and Depends: headers
 
- -- Wouter Verhelst <wouter@debian.org>  Tue, 22 Apr 2014 19:31:57 +0200
+ -- Wouter Verhelst <wouter@debian.org>  Tue, 22 Apr 2014 20:42:31 +0200
 
 ola (0.9.0-2) unstable; urgency=medium
 
