@@ -9,6 +9,7 @@ ola (0.9.0-4) UNRELEASED; urgency=medium
   * tools/rdm/static/rdmtest.html, debian/ola-rdm-tests.link: don't use
     shipped/minified version of jquery, instead use Debian-packaged
     versions by using symlinks and Depends: headers
+  * ola-python: fix dependency to ola so it's binNMUable
 
  -- Wouter Verhelst <wouter@debian.org>  Tue, 22 Apr 2014 20:42:31 +0200
 

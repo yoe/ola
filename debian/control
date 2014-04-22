@@ -27,7 +27,7 @@ Description: Open Lighting Architecture - development libraries
 Package: ola-python
 Section: libs
 Architecture: all
-Depends: ola (= ${binary:Version}), ${python:Depends}, ${misc:Depends}, python-protobuf
+Depends: ola (>= ${source:Version}), ola (<< ${source:Version}.~) ${python:Depends}, ${misc:Depends}, python-protobuf
 Description: Open Lighting Architecture - Python Classes
  The DMX512 standard for Digital MultipleX is used for digital
  communication networks commonly used to control stage lighting and
