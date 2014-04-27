@@ -10,7 +10,7 @@
 #export DH_VERBOSE=1
 
 %:
-	dh $@ --with autotools_dev,autoreconf,bash_completion
+	dh $@ --with autotools_dev,autoreconf,bash_completion,python-support
 
 override_dh_autoreconf:
 	chmod +x version.sh
