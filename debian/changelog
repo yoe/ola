@@ -4,7 +4,7 @@ ola (0.9.1-1) unstable; urgency=low
 
  -- Wouter Verhelst <wouter@debian.org>  Sat, 19 Jul 2014 12:56:32 +0200
 
-ola (0.9.0-5) UNRELEASED; urgency=medium
+ola (0.9.0-5) never released; urgency=medium
 
   * Add missing numbers for FSF copyright licenses (zip code, house numbers)
 
