@@ -11,11 +11,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * ArtNetNode.cpp
  * An ArtNet node
- * Copyright (C) 2005-2010 Simon Newton
+ * Copyright (C) 2005 Simon Newton
  */
 
 #include <string.h>
@@ -1030,7 +1030,7 @@ bool ArtNetNodeImpl::SendPollReply(const IPV4Address &destination) {
           m_long_name.data(),
           ARTNET_LONG_NAME_LENGTH);
 
-  std::stringstream str;
+  std::ostringstream str;
   str << "#0001 [" << m_unsolicited_replies << "] OLA";
   strncpy(packet.data.reply.node_report, str.str().data(),
           ARTNET_REPORT_LENGTH);

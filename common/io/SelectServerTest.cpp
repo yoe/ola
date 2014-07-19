@@ -11,15 +11,19 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * SelectServerTest.cpp
  * Test fixture for the Socket classes
- * Copyright (C) 2005-2008 Simon Newton
+ * Copyright (C) 2005 Simon Newton
  */
 
 #include <cppunit/extensions/HelperMacros.h>
 #include <sstream>
+
+#ifdef _WIN32
+#include <Winsock2.h>
+#endif
 
 #include "common/io/PollerInterface.h"
 #include "ola/Callback.h"
@@ -114,17 +118,26 @@ CPPUNIT_TEST_SUITE_REGISTRATION(SelectServerTest);
 
 
 void SelectServerTest::setUp() {
-  ola::InitLogging(ola::OLA_LOG_INFO, ola::OLA_LOG_STDERR);
   m_map = new ExportMap();
   m_ss = new SelectServer(m_map);
   m_timeout_counter = 0;
   m_loop_counter = 0;
+
+#if _WIN32
+  WSADATA wsa_data;
+  int result = WSAStartup(MAKEWORD(2, 0), &wsa_data);
+  OLA_ASSERT_EQ(result, 0);
+#endif
 }
 
 
 void SelectServerTest::tearDown() {
   delete m_ss;
   delete m_map;
+
+#ifdef _WIN32
+  WSACleanup();
+#endif
 }
 
 
@@ -140,7 +153,7 @@ void SelectServerTest::testAddRemoveReadDescriptor() {
     m_map->GetIntegerVar(PollerInterface::K_READ_DESCRIPTOR_VAR);
   OLA_ASSERT_EQ(1, connected_socket_count->Get());  // internal socket
   OLA_ASSERT_EQ(0, socket_count->Get());
-  // adding and removin a non-connected socket should fail
+  // adding and removing a non-connected socket should fail
   OLA_ASSERT_FALSE(m_ss->AddReadDescriptor(&bad_socket));
   OLA_ASSERT_FALSE(m_ss->RemoveReadDescriptor(&bad_socket));
 
@@ -213,7 +226,7 @@ void SelectServerTest::testTimeout() {
       ola::NewSingleCallback(this, &SelectServerTest::TerminateTimeout));
   m_ss->Run();
   // This seems to go as low as 7
-  std::stringstream str;
+  std::ostringstream str;
   str << "Timeout counter was " << m_timeout_counter;
   OLA_ASSERT_TRUE_MSG(m_timeout_counter >= 5 && m_timeout_counter <= 9,
                       str.str());

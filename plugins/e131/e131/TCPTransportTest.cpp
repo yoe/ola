@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * TCPTransportTest.cpp
  * Test fixture for the TCPTransport class
@@ -247,7 +247,7 @@ void TCPTransportTest::testSinglePDUBlock() {
  * Send empty PDU block.
  */
 void TCPTransportTest::SendEmptyPDUBLock(unsigned int line) {
-  std::stringstream str;
+  std::ostringstream str;
   str << "Line " << line;
 
   IOStack packet;
@@ -260,7 +260,7 @@ void TCPTransportTest::SendEmptyPDUBLock(unsigned int line) {
  * Send a PDU
  */
 void TCPTransportTest::SendPDU(unsigned int line) {
-  std::stringstream str;
+  std::ostringstream str;
   str << "Line " << line;
   IOStack packet;
   MockPDU::PrependPDU(&packet, 4, 8);
@@ -273,7 +273,7 @@ void TCPTransportTest::SendPDU(unsigned int line) {
  * Send a block of PDUs
  */
 void TCPTransportTest::SendPDUBlock(unsigned int line) {
-  std::stringstream str;
+  std::ostringstream str;
   str << "Line " << line;
   IOStack packet;
   MockPDU::PrependPDU(&packet, 1, 2);

@@ -11,21 +11,15 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * NetworkUtils.h
  * Abstract various network functions.
- * Copyright (C) 2005-2014 Simon Newton
+ * Copyright (C) 2005 Simon Newton
  */
 
 #ifndef INCLUDE_OLA_NETWORK_NETWORKUTILS_H_
 #define INCLUDE_OLA_NETWORK_NETWORKUTILS_H_
-
-#ifdef WIN32
-#include <winsock2.h>
-#else
-#include <arpa/inet.h>
-#endif
 
 #include <ola/network/Interface.h>
 #include <ola/network/IPV4Address.h>
@@ -35,18 +29,6 @@
 
 namespace ola {
 namespace network {
-
-/**
- * Return the length of a sockaddr
- */
-unsigned int SockAddrLen(const struct sockaddr &sa);
-
-/**
- * Convert a string to a struct in_addr
- */
-bool StringToAddress(const std::string &address, struct in_addr *addr);
-
-std::string AddressToString(const struct in_addr &addr);
 
 /**
  * @return true if we're big endian, false otherwise.

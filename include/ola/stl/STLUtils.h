@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * STLUtils.h
  * Helper functions for dealing with the STL.
@@ -46,6 +46,31 @@ namespace ola {
  * @addtogroup stl
  * @{
  */
+
+/**
+ * @brief Clear a stack.
+ * @tparam T A stack.
+ * @post The stack is empty.
+ */
+template<typename T>
+void STLEmptyStack(T *stack) {
+  while (!stack->empty()) {
+    stack->pop();
+  }
+}
+
+/**
+ * @brief Clear a stack and delete all pointers..
+ * @tparam T A stack of pointers.
+ * @post The stack is empty.
+ */
+template<typename T>
+void STLEmptyStackAndDelete(T *stack) {
+  while (!stack->empty()) {
+    delete stack->top();
+    stack->pop();
+  }
+}
 
 /**
  * @brief Delete the elements of a Sequence.

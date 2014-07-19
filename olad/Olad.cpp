@@ -11,17 +11,17 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * Olad.cpp
  * Main file for olad, parses the options, forks if required and runs the
  * daemon.
- * Copyright (C) 2005-2007 Simon Newton
+ * Copyright (C) 2005 Simon Newton
  *
  */
 
 #if HAVE_CONFIG_H
-#  include <config.h>
+#include <config.h>
 #endif
 
 #include <signal.h>
@@ -48,7 +48,9 @@ using std::endl;
 
 DEFINE_bool(http, true, "Disable the HTTP server.");
 DEFINE_bool(http_quit, true, "Disable the HTTP /quit handler.");
+#ifndef _WIN32
 DEFINE_s_bool(daemon, f, false, "Fork and run in the background.");
+#endif
 DEFINE_s_string(http_data_dir, d, "", "The path to the static www content.");
 DEFINE_s_string(interface, i, "",
                 "The interface name (e.g. eth0) or IP of the network interface "
@@ -82,14 +84,18 @@ int main(int argc, char *argv[]) {
   OLA_INFO << "OLA Daemon version " << ola::base::Version::GetVersion();
 
   #ifndef OLAD_SKIP_ROOT_CHECK
-  if (!ola::GetEUID()) {
+  uid_t uid;
+  ola::GetEUID(&uid);
+  if (ola::SupportsUIDs() && !uid) {
     OLA_FATAL << "Attempting to run as root, aborting.";
     return ola::EXIT_UNAVAILABLE;
   }
   #endif
 
+#ifndef _WIN32
   if (FLAGS_daemon)
     ola::Daemonise();
+#endif
 
   ola::ExportMap export_map;
   ola::ServerInit(argc, argv, &export_map);
@@ -101,16 +107,18 @@ int main(int argc, char *argv[]) {
   SignalThread signal_thread;
   signal_thread.InstallSignalHandler(SIGINT, NULL);
   signal_thread.InstallSignalHandler(SIGTERM, NULL);
+#ifndef _WIN32
   signal_thread.InstallSignalHandler(SIGHUP, NULL);
   signal_thread.InstallSignalHandler(
       SIGUSR1, ola::NewCallback(&ola::IncrementLogLevel));
+#endif
 
   ola::OlaServer::Options options;
   options.http_enable = FLAGS_http;
   options.http_enable_quit = FLAGS_http_quit;
   options.http_port = FLAGS_http_port;
   options.http_data_dir = FLAGS_http_data_dir.str();
-  options.interface = FLAGS_interface.str();
+  options.network_interface = FLAGS_interface.str();
   options.pid_data_dir = FLAGS_pid_location.str();
 
   std::auto_ptr<OlaDaemon> olad(new OlaDaemon(options, &export_map));
@@ -141,10 +149,12 @@ int main(int argc, char *argv[]) {
     return ola::EXIT_UNAVAILABLE;
   }
 
+#ifndef _WIN32
   // Finally the OlaServer is not-null.
   signal_thread.InstallSignalHandler(
       SIGHUP,
       ola::NewCallback(olad->GetOlaServer(), &ola::OlaServer::ReloadPlugins));
+#endif
 
   olad->Run();
   return ola::EXIT_OK;

@@ -25,10 +25,10 @@ libolaslpproto_la_CXXFLAGS = $(WARNING_CXXFLAGS)
 
 BUILT_SOURCES = SLP.pb.cc SLP.pb.h SLPService.pb.h SLPService.pb.h
 
-SLP.pb.cc SLP.pb.h: Makefile SLP.proto
+SLP.pb.cc SLP.pb.h: Makefile.am SLP.proto
 	$(PROTOC) --cpp_out ./ --proto_path $(srcdir) $(srcdir)/SLP.proto
 
-SLPService.pb.cpp SLPService.pb.h: Makefile SLP.proto
+SLPService.pb.cpp SLPService.pb.h: Makefile.am SLP.proto
 	$(OLA_PROTOC)  --cppservice_out ./ --proto_path $(srcdir) $(srcdir)/SLP.proto
 
 # libolaslpcore
@@ -76,6 +76,11 @@ slp_client_LDADD = ../common/libolacommon.la \
                    ../ola/libola.la \
                    libolaslpclient.la \
                    libolaslpcore.la
+
+if USING_WIN32
+slp_server_LDADD += -lWs2_32
+slp_client_LDADD += -lWs2_32
+endif
 
 # TESTS
 ##################################################

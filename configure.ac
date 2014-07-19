@@ -27,15 +27,59 @@ AC_LIBTOOL_WIN32_DLL
 AC_HEADER_DIRENT
 AC_HEADER_RESOLV
 AC_HEADER_STDC
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h float.h limits.h malloc.h netinet/in.h stdint.h stdlib.h string.h strings.h sys/file.h sys/ioctl.h sys/socket.h sys/time.h sys/timeb.h syslog.h termios.h unistd.h])
-AC_CHECK_HEADERS([assert.h endian.h errno.h execinfo.h \
-                  linux/if_packet.h math.h net/ethernet.h \
-                  net/if_arp.h net/route.h sys/sysctl.h sys/types.h sys/uio.h \
-                  sysexits.h])
+AC_CHECK_HEADERS([arpa/inet.h bits/sockaddr.h fcntl.h float.h limits.h malloc.h netinet/in.h stdint.h stdlib.h string.h strings.h sys/file.h sys/ioctl.h sys/socket.h sys/time.h sys/timeb.h syslog.h termios.h unistd.h])
+AC_CHECK_HEADERS([asm/termios.h assert.h dlfcn.h endian.h errno.h execinfo.h \
+                  linux/if_packet.h math.h net/ethernet.h stropts.h \
+                  sys/param.h sys/types.h sys/uio.h sysexits.h])
+AC_CHECK_HEADERS([winsock2.h])
 AC_CHECK_HEADERS([random])
 
+# This needs stuff in sys/param.h on OpenBSD
+AC_CHECK_HEADERS([sys/sysctl.h], [], [],
+                 [[#ifdef HAVE_SYS_PARAM_H
+                     #include <sys/param.h>
+                   #endif
+                  ]])
+
+# These all need stuff in sys/types.h and sys/socket.h on FreeBSD/OpenBSD
+# OpenBSD is fussy about the ordering
+AC_CHECK_HEADERS([net/if.h net/if_arp.h net/route.h], [], [],
+                 [[#ifdef HAVE_SYS_TYPES_H
+                     #include <sys/types.h>
+                   #endif
+                   #ifdef HAVE_SYS_SOCKET_H
+                     #include <sys/socket.h>
+                   #endif
+                  ]])
+
+# This needs stuff in net/if.h on NetBSD
+AC_CHECK_HEADERS([net/if_ether.h], [], [],
+                 [[#ifdef HAVE_NET_IF_H
+                     #include <net/if.h>
+                   #endif
+                  ]])
+
+# This needs stuff in lots of headers on OpenBSD
+AC_CHECK_HEADERS([netinet/if_ether.h], [], [],
+                 [[#ifdef HAVE_SYS_TYPES_H
+                     #include <sys/types.h>
+                   #endif
+                   #ifdef HAVE_SYS_SOCKET_H
+                     #include <sys/socket.h>
+                   #endif
+                   #ifdef HAVE_NET_IF_H
+                     #include <net/if.h>
+                   #endif
+                   #ifdef HAVE_NET_IF_ARP_H
+                     #include <net/if_arp.h>
+                   #endif
+                   #ifdef HAVE_ARPA_INET_H
+                     #include <arpa/inet.h>
+                   #endif
+                  ]])
+
 # These both need sa_family_t from bits/sockaddr.h
-AC_CHECK_HEADERS([bits/sockaddr.h linux/netlink.h linux/rtnetlink.h], [], [],
+AC_CHECK_HEADERS([linux/netlink.h linux/rtnetlink.h], [], [],
                  [[#ifdef HAVE_BITS_SOCKADDR_H
                      #include <bits/sockaddr.h>
                    #endif
@@ -69,8 +113,9 @@ AC_FUNC_STAT
 AC_FUNC_CLOSEDIR_VOID
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([bzero gettimeofday memmove memset mkdir strdup strrchr \
-                inet_ntoa inet_aton select socket strerror getifaddrs \
-                getloadavg getpwnam_r getpwuid_r getgrnam_r getgrgid_r])
+                if_nametoindex inet_ntoa inet_aton select socket strerror \
+                getifaddrs getloadavg getpwnam_r getpwuid_r getgrnam_r \
+                getgrgid_r])
 AX_HAVE_EPOLL([AC_DEFINE([HAVE_EPOLL], [1], [Defined if epoll exists])]) # epoll
 
 LT_INIT
@@ -205,6 +250,10 @@ AS_IF([test -z "$PKG_CONFIG"],
 # Libraries.
 #####################################################
 
+# dlopen
+AC_SEARCH_LIBS([dlopen], [dl], [have_dlopen="yes"])
+AM_CONDITIONAL([HAVE_DLOPEN], [test "x$have_dlopen" = xyes])
+
 # dmx4linux
 have_dmx4linux="no"
 AC_CHECK_LIB(dmx4linux, DMXdev, [have_dmx4linux="yes"])
@@ -241,7 +290,9 @@ ACX_PTHREAD([
             [AC_MSG_ERROR([Missing pthread, please install it])])
 
 # resolv
-ACX_RESOLV()
+AS_IF([test -z "${USING_WIN32_FALSE}"],
+  [ACX_RESOLV()],
+  [AC_CHECK_LIB([Iphlpapi], [main], [have_iphlpapi="yes"])]) # Use equivalent library on windows
 
 # uuid
 # We've had to revert to os matching here because ossp uuid conflicts with the
@@ -448,6 +499,17 @@ AS_IF([test "x$enable_libusb" != xno],
 AS_IF([test "x$have_libusb" = xyes],
       [AC_DEFINE([HAVE_LIBUSB], [1], [define if libusb is installed])])
 
+# UART direct plugin
+AC_ARG_ENABLE(
+  [uart],
+  [AS_HELP_STRING([--disable-uart],
+                  [Avoid using native uart support])])
+
+AC_CHECK_HEADERS([asm/termios.h], [have_asm_termios="yes"], [have_asm_termios="no"])
+AS_IF([test "x$have_asm_termios" = xyes],
+      [AC_DEFINE([USE_UART], [1], [define if asm/termios.h is available and direct UART support should be enabled])])
+
+
 # OSC Support.
 # look for liblo if the user asked us to
 AC_ARG_ENABLE(
@@ -513,6 +575,16 @@ AC_ARG_ENABLE([tcmalloc], AS_HELP_STRING([--enable-tcmalloc], [Use tcmalloc]))
 AS_IF([test "x$enable_tcmalloc" = xyes],
       [LDFLAGS="$LDFLAGS -ltcmalloc"])
 
+# Optionally set the Doxygen version to "Latest Git" for website latest
+# version.
+DOXYGEN_VERSION=$PACKAGE_VERSION
+AC_ARG_ENABLE(
+  [doxygen-version],
+  [AS_HELP_STRING([--disable-doxygen-version],
+  [Substitute the Doxygen version with latest, for the website])])
+AS_IF([test "x$enable_doxygen_version" = xno],
+      [DOXYGEN_VERSION="\"Latest Git\""])
+AC_SUBST(DOXYGEN_VERSION)
 
 # Python wrappers & RDM Responder tests.
 #####################################################
@@ -562,6 +634,7 @@ PLUGIN_SUPPORT(sandnet, USE_SANDNET)
 PLUGIN_SUPPORT(shownet, USE_SHOWNET)
 PLUGIN_SUPPORT(spi, USE_SPI, [$have_spi])
 PLUGIN_SUPPORT(stageprofi, USE_STAGEPROFI)
+PLUGIN_SUPPORT(uartdmx, USE_UART, [$have_asm_termios])
 PLUGIN_SUPPORT(usbpro, USE_USBPRO)
 PLUGIN_SUPPORT(usbdmx, USE_LIBUSB, [$have_libusb])
 
@@ -691,6 +764,7 @@ AC_CONFIG_FILES([Makefile
                  plugins/shownet/Makefile
                  plugins/spi/Makefile
                  plugins/stageprofi/Makefile
+                 plugins/uartdmx/Makefile
                  plugins/usbdmx/Makefile
                  plugins/usbpro/Makefile
                  plugins/usbpro/messages/Makefile

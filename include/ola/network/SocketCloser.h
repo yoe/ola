@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * SocketCloser.h
  * Close a socket when the object goes out of scope.
@@ -30,6 +30,7 @@
 #define INCLUDE_OLA_NETWORK_SOCKETCLOSER_H_
 
 #include <unistd.h>
+#include <ola/base/Macro.h>
 
 namespace ola {
 namespace network {
@@ -79,6 +80,8 @@ class SocketCloser {
 
  private:
   int m_fd;
+
+  DISALLOW_COPY_AND_ASSIGN(SocketCloser);
 };
 /**
  * @}

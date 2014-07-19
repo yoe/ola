@@ -4,18 +4,24 @@ include $(top_srcdir)/common.mk
 ##################################################
 noinst_LTLIBRARIES = libolaio.la
 libolaio_la_SOURCES = Descriptor.cpp \
+                      ExtendedSerial.cpp \
                       IOQueue.cpp \
                       IOStack.cpp \
                       IOUtils.cpp \
                       PollerInterface.cpp \
                       PollerInterface.h \
-                      SelectPoller.cpp \
-                      SelectPoller.h \
                       SelectServer.cpp \
                       Serial.cpp \
                       StdinHandler.cpp \
                       TimeoutManager.cpp \
                       TimeoutManager.h
+if USING_WIN32
+libolaio_la_SOURCES += WindowsPoller.cpp \
+                       WindowsPoller.h
+else
+libolaio_la_SOURCES += SelectPoller.cpp \
+                       SelectPoller.h
+endif
 
 # TESTS
 ##################################################
@@ -29,6 +35,9 @@ check_PROGRAMS = $(TESTS)
 
 COMMON_TEST_LDADD = $(COMMON_TESTING_LIBS) \
                     ../libolacommon.la
+if USING_WIN32
+COMMON_TEST_LDADD += -lWs2_32
+endif
 
 IOQueueTester_SOURCES = IOQueueTest.cpp
 IOQueueTester_CXXFLAGS = $(COMMON_TESTING_FLAGS)

@@ -11,15 +11,20 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * DummyPortTest.cpp
  * Test class for the dummy responders
- * Copyright (C) 2005-2014 Simon Newton
+ * Copyright (C) 2005 Simon Newton
  */
 
 #include <cppunit/extensions/HelperMacros.h>
 #include <string.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <algorithm>
 #include <string>
 #include <vector>

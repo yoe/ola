@@ -11,11 +11,11 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * IPAddressTest.cpp
  * Test fixture for the IPV4Address class
- * Copyright (C) 2011-2014 Simon Newton
+ * Copyright (C) 2011 Simon Newton
  */
 
 #include <cppunit/extensions/HelperMacros.h>
@@ -26,12 +26,20 @@
 #include <memory>
 #include <string>
 #include <vector>
+#ifdef _WIN32
+#include <Winsock2.h>
+#ifndef in_addr_t
+#define in_addr_t uint32_t
+#endif
+#endif
+#include "common/network/NetworkUtilsInternal.h"
 #include "ola/network/IPV4Address.h"
 #include "ola/network/NetworkUtils.h"
 #include "ola/testing/TestUtils.h"
 
 
 using ola::network::IPV4Address;
+using ola::network::HostToNetwork;
 using std::auto_ptr;
 using std::string;
 
@@ -59,23 +67,20 @@ CPPUNIT_TEST_SUITE_REGISTRATION(IPAddressTest);
 void IPAddressTest::testIPV4Address() {
   IPV4Address wildcard_address;
   OLA_ASSERT_EQ(string("0.0.0.0"), wildcard_address.ToString());
-  OLA_ASSERT_EQ(static_cast<in_addr_t>(0), wildcard_address.Address().s_addr);
+  OLA_ASSERT_EQ(static_cast<in_addr_t>(0), wildcard_address.AsInt());
   OLA_ASSERT_TRUE(wildcard_address.IsWildcard());
 
-  struct in_addr in_addr1;
-  OLA_ASSERT_TRUE(ola::network::StringToAddress("192.168.1.1", &in_addr1));
-  IPV4Address address1(in_addr1);
-  OLA_ASSERT_EQ(in_addr1.s_addr, address1.Address().s_addr);
+  IPV4Address address1 = IPV4Address::FromStringOrDie("192.168.1.1");
+  int ip_as_int = address1.AsInt();
   OLA_ASSERT_NE(wildcard_address, address1);
+  OLA_ASSERT_NE(HostToNetwork(0xc0a811), ip_as_int);
 
   // Test Get()
   uint8_t addr[IPV4Address::LENGTH];
   address1.Get(addr);
   OLA_ASSERT_EQ(
       0,
-      memcmp(addr,
-             reinterpret_cast<uint8_t*>(&in_addr1),
-             IPV4Address::LENGTH));
+      memcmp(addr, reinterpret_cast<uint8_t*>(&ip_as_int), sizeof(ip_as_int)));
 
   // test copy and assignment
   IPV4Address address2(address1);
@@ -85,7 +90,7 @@ void IPAddressTest::testIPV4Address() {
 
   // test stringification
   OLA_ASSERT_EQ(string("192.168.1.1"), address1.ToString());
-  std::stringstream str;
+  std::ostringstream str;
   str << address1;
   OLA_ASSERT_EQ(string("192.168.1.1"), str.str());
 
@@ -157,7 +162,7 @@ void IPAddressTest::testIPV4Address() {
 void IPAddressTest::testWildcard() {
   IPV4Address wildcard_address;
   OLA_ASSERT_EQ(string("0.0.0.0"), wildcard_address.ToString());
-  OLA_ASSERT_EQ(static_cast<in_addr_t>(0), wildcard_address.Address().s_addr);
+  OLA_ASSERT_EQ(static_cast<in_addr_t>(0), wildcard_address.AsInt());
   OLA_ASSERT_TRUE(wildcard_address.IsWildcard());
 
   IPV4Address wildcard_address2 = IPV4Address::WildCard();

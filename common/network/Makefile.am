@@ -9,8 +9,9 @@ libolanetwork_la_SOURCES = AdvancedTCPConnector.cpp \
                            IPV4Address.cpp \
                            Interface.cpp \
                            InterfacePicker.cpp \
-                           NetworkUtils.cpp \
                            MACAddress.cpp \
+                           NetworkUtils.cpp \
+                           NetworkUtilsInternal.h \
                            Socket.cpp \
                            SocketAddress.cpp \
                            SocketHelper.cpp \
@@ -36,6 +37,9 @@ check_PROGRAMS = $(TESTS)
 # required for all tests
 COMMON_TEST_LDADD = $(COMMON_TESTING_LIBS) \
                     ../libolacommon.la
+if USING_WIN32
+COMMON_TEST_LDADD += -lWs2_32 -lIphlpapi
+endif
 
 HealthCheckedConnectionTester_SOURCES = HealthCheckedConnectionTest.cpp
 HealthCheckedConnectionTester_CXXFLAGS = $(COMMON_TESTING_FLAGS)

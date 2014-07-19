@@ -11,25 +11,15 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * Interface.h
  * Represents a network interface.
- * Copyright (C) 2010-2014 Simon Newton
+ * Copyright (C) 2010 Simon Newton
  */
 
 #ifndef INCLUDE_OLA_NETWORK_INTERFACE_H_
 #define INCLUDE_OLA_NETWORK_INTERFACE_H_
-
-#ifdef WIN32
-// TODO(Peter): Do something else
-#else
-#include <net/if_arp.h>
-#ifndef ARPHRD_VOID
-// Not defined on FreeBSD
-#define ARPHRD_VOID       0xFFFF        /* Void type, nothing is known.  */
-#endif  // ARPHRD_VOID
-#endif
 
 #include <stdint.h>
 #include <ola/network/IPV4Address.h>
@@ -54,7 +44,7 @@ class Interface {
             const MACAddress &hw_address,
             bool loopback,
             int32_t index = DEFAULT_INDEX,
-            uint16_t type = ARPHRD_VOID);
+            uint16_t type = ARP_VOID_TYPE);
   Interface(const Interface &other);
   Interface& operator=(const Interface &other);
   bool operator==(const Interface &other);
@@ -67,6 +57,10 @@ class Interface {
   bool loopback;
   int32_t index;
   uint16_t type;
+
+  /* Void type, nothing is known */
+  static const uint16_t ARP_VOID_TYPE;
+  static const uint16_t ARP_ETHERNET_TYPE;
 };
 
 

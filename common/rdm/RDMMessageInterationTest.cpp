@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * RDMMessageInterationTest.cpp
  * Test fixture for the StringBuilder classes
@@ -59,7 +59,6 @@ class RDMMessageInterationTest: public CppUnit::TestFixture {
     void testParameterDescription();
 
     void setUp() {
-      ola::InitLogging(ola::OLA_LOG_DEBUG, ola::OLA_LOG_STDERR);
       ola::rdm::PidStoreLoader loader;
       m_store.reset(loader.LoadFromFile(
             TEST_SRC_DIR "/testdata/test_pids.proto"));

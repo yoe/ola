@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * KiNetPlugin.cpp
  * The KiNet plugin for ola
@@ -40,6 +40,10 @@ using std::vector;
 const char KiNetPlugin::POWER_SUPPLY_KEY[] = "power_supply";
 const char KiNetPlugin::PLUGIN_NAME[] = "KiNET";
 const char KiNetPlugin::PLUGIN_PREFIX[] = "kinet";
+
+KiNetPlugin::KiNetPlugin(PluginAdaptor *plugin_adaptor)
+    : Plugin(plugin_adaptor) {
+}
 
 KiNetPlugin::~KiNetPlugin() {}
 

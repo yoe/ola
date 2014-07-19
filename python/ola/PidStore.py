@@ -1,4 +1,3 @@
-#  This program is free software; you can redistribute it and/or modify
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -11,7 +10,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # PidStore.py
 # Copyright (C) 2010 Simon Newton
@@ -25,6 +24,7 @@ import binascii
 import math
 import ola.RDMConstants
 import os
+import socket
 import struct
 import sys
 from google.protobuf import text_format
@@ -420,11 +420,25 @@ class UInt32(IntAtom):
     super(UInt32, self).__init__(name, 'I', 0xffffffff, **kwargs)
 
 
-#TODO(Peter): pretty print this
 class IPV4(IntAtom):
   """A four-byte IPV4 address."""
   def __init__(self, name, **kwargs):
     super(IPV4, self).__init__(name, 'I', 0xffffffff, **kwargs)
+
+  def Unpack(self, data):
+    try:
+      return socket.inet_ntoa(data)
+    except socket.error, e:
+      raise ArgsValidationError("Can't unpack data: %s" % e)
+
+  def Pack(self, args):
+    #TODO(Peter): This currently allows some rather quirky values as per
+    #inet_aton, we may want to restrict that in future
+    try:
+      value = struct.unpack("!I", socket.inet_aton(args[0]))
+    except socket.error, e:
+      raise ArgsValidationError("Can't pack data: %s" % e)
+    return super(IntAtom, self).Pack(value)
 
 
 class MACAtom(FixedSizeAtom):

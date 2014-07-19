@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * PidStoreTest.cpp
  * Test fixture for the PidStore & Pid classes
@@ -64,24 +64,17 @@ class PidStoreTest: public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE_END();
 
  public:
-    void testPidDescriptor();
-    void testPidStore();
-    void testPidStoreLoad();
-    void testPidStoreFileLoad();
-    void testPidStoreDirectoryLoad();
-    void testPidStoreLoadMissingFile();
-    void testPidStoreLoadDuplicateManufacturer();
-    void testPidStoreLoadDuplicateValue();
-    void testPidStoreLoadDuplicateName();
-    void testPidStoreLoadInvalidEstaPid();
-    void testInconsistentData();
-
-    void setUp() {
-      ola::InitLogging(ola::OLA_LOG_DEBUG, ola::OLA_LOG_STDERR);
-    }
-    void tearDown() {}
-
- private:
+  void testPidDescriptor();
+  void testPidStore();
+  void testPidStoreLoad();
+  void testPidStoreFileLoad();
+  void testPidStoreDirectoryLoad();
+  void testPidStoreLoadMissingFile();
+  void testPidStoreLoadDuplicateManufacturer();
+  void testPidStoreLoadDuplicateValue();
+  void testPidStoreLoadDuplicateName();
+  void testPidStoreLoadInvalidEstaPid();
+  void testInconsistentData();
 };
 
 
@@ -183,6 +176,8 @@ void PidStoreTest::testPidStore() {
  */
 void PidStoreTest::testPidStoreLoad() {
   PidStoreLoader loader;
+  // This is a stringstream not a ostringstream as the other end needs an
+  // istream
   std::stringstream str;
 
   // check that this fails to load

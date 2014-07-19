@@ -20,8 +20,9 @@ output_files = ArtnetConfigMessages_pb2.py Ola_pb2.py \
 BUILT_SOURCES = $(output_files)
 
 nodist_pkgpython_PYTHON = $(output_files)
-pkgpython_PYTHON = ClientWrapper.py DUBDecoder.py MACAddress.py OlaClient.py \
-                   RDMAPI.py RDMConstants.py PidStore.py UID.py __init__.py
+pkgpython_PYTHON = ClientWrapper.py DMXConstants.py DUBDecoder.py \
+                   MACAddress.py OlaClient.py RDMAPI.py RDMConstants.py \
+                   PidStore.py UID.py __init__.py
 endif
 
 ArtnetConfigMessages_pb2.py: $(artnet_proto)
@@ -45,6 +46,8 @@ Version.py: ../../configure.ac
 # TESTS
 ##################################################
 TESTS_ENVIRONMENT = PYTHONPATH=${top_srcdir}/python
+TEST_EXTENSIONS = .py
+PY_LOG_COMPILER = $(PYTHON)
 if BUILD_PYTHON_LIBS
 TESTS = DUBDecoderTest.py MACAddressTest.py UIDTest.py
 endif

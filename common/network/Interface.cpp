@@ -11,15 +11,26 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * Interface.cpp
  * Represents network interface.
- * Copyright (C) 2005-2014 Simon Newton
+ * Copyright (C) 2005 Simon Newton
  */
+
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>  // Required by FreeBSD, order is important to OpenBSD
+#endif
+#ifdef HAVE_SYS_SOCKET_H
+#include <sys/socket.h>  // Required by FreeBSD
+#endif
+#ifdef HAVE_NET_IF_ARP_H
+#include <net/if_arp.h>
+#endif
 
 #include <stdint.h>
 #include <string.h>
+
 #include <string>
 #include <vector>
 
@@ -27,23 +38,36 @@
 #include "ola/network/InterfacePicker.h"
 #include "ola/network/NetworkUtils.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include "common/network/WindowsInterfacePicker.h"
 #else
 #include "common/network/PosixInterfacePicker.h"
 #endif
 
 namespace ola {
+
 namespace network {
 
 using std::string;
 using std::vector;
 
+#ifdef ARPHRD_VOID
+const uint16_t Interface::ARP_VOID_TYPE = ARPHRD_VOID;
+#else
+const uint16_t Interface::ARP_VOID_TYPE = 0xffff;
+#endif
+
+#ifdef ARPHRD_ETHER
+const uint16_t Interface::ARP_ETHERNET_TYPE = ARPHRD_ETHER;
+#else
+const uint16_t Interface::ARP_ETHERNET_TYPE = 1;
+#endif
+
 
 Interface::Interface()
     : loopback(false),
       index(DEFAULT_INDEX),
-      type(ARPHRD_VOID) {
+      type(ARP_VOID_TYPE) {
 }
 
 
@@ -173,7 +197,7 @@ void InterfaceBuilder::Reset() {
   m_hw_address = MACAddress();
   m_loopback = false;
   m_index = Interface::DEFAULT_INDEX;
-  m_type = ARPHRD_VOID;
+  m_type = Interface::ARP_VOID_TYPE;
 }
 
 

@@ -11,14 +11,14 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * NetworkResponder.cpp
- * Copyright (C) 2013-2014 Peter Newman
+ * Copyright (C) 2013 Peter Newman
  */
 
 #if HAVE_CONFIG_H
-#  include <config.h>
+#include <config.h>
 #endif
 
 #include <iostream>
@@ -121,7 +121,7 @@ NetworkResponder::NetworkResponder(const UID &uid)
       MACAddress::FromStringOrDie("01:23:45:67:89:ab"),
       false,
       1,
-      ARPHRD_ETHER));
+      Interface::ARP_ETHERNET_TYPE));
 
   interfaces.push_back(Interface(
       "eth2",
@@ -131,7 +131,7 @@ NetworkResponder::NetworkResponder(const UID &uid)
       MACAddress::FromStringOrDie("45:67:89:ab:cd:ef"),
       false,
       2,
-      ARPHRD_ETHER));
+      Interface::ARP_ETHERNET_TYPE));
 
   vector<IPV4Address> name_servers;
   name_servers.push_back(IPV4Address::FromStringOrDie("10.0.0.1"));

@@ -11,11 +11,11 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * ExportMap.h
  * Interface the ExportMap and ExportedVariables
- * Copyright (C) 2005-2008 Simon Newton
+ * Copyright (C) 2005 Simon Newton
  */
 
 /**
@@ -159,7 +159,7 @@ class IntegerVariable: public BaseVariable {
   void Reset() { m_value = 0; }
   int Get() const { return m_value; }
   const std::string Value() const {
-    std::stringstream out;
+    std::ostringstream out;
     out << m_value;
     return out.str();
   }
@@ -184,7 +184,7 @@ class CounterVariable: public BaseVariable {
   void Reset() { m_value = 0; }
   unsigned int Get() const { return m_value; }
   const std::string Value() const {
-    std::stringstream out;
+    std::ostringstream out;
     out << m_value;
     return out.str();
   }

@@ -11,21 +11,15 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * InterfacePicker.h
  * Choose an interface to listen on
- * Copyright (C) 2005-2014 Simon Newton
+ * Copyright (C) 2005 Simon Newton
  */
 
 #ifndef INCLUDE_OLA_NETWORK_INTERFACEPICKER_H_
 #define INCLUDE_OLA_NETWORK_INTERFACEPICKER_H_
-
-#ifdef WIN32
-#include <winsock2.h>
-#else
-#include <netinet/in.h>
-#endif
 
 #include <ola/network/Interface.h>
 #include <string>

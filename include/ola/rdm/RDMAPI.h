@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * RDMAPI.h
  * Provide a generic RDM API that can use different implementations.
@@ -260,8 +260,8 @@ class QueuedMessageHandler {
                             uint8_t inverted) = 0;
     virtual void PanTiltSwap(const ResponseStatus &status,
                              uint8_t inverted) = 0;
-    virtual void IdentifyMode(const ResponseStatus &status,
-                              bool mode) = 0;
+    virtual void IdentifyDevice(const ResponseStatus &status,
+                                bool mode) = 0;
     virtual void Clock(const ResponseStatus &status,
                        const ClockValue &clock) = 0;
     virtual void PowerState(const ResponseStatus &status,
@@ -840,7 +840,7 @@ class RDMAPI {
         ola::SingleUseCallback1<void, const ResponseStatus&> *callback,
         std::string *error);
 
-    bool GetIdentifyMode(
+    bool GetIdentifyDevice(
         unsigned int universe,
         const UID &uid,
         uint16_t sub_device,

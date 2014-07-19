@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * rdm-sniffer.cpp
  * RDM Sniffer software for the ENTTEC RDM Pro.
@@ -51,7 +51,6 @@ using std::cerr;
 using std::cout;
 using std::endl;
 using std::string;
-using std::stringstream;
 using std::vector;
 using ola::io::SelectServerInterface;
 using ola::plugin::usbpro::DispatchingUsbProWidget;

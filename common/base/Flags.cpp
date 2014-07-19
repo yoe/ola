@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * Flags.cpp
  * Handle command line flags.
@@ -285,13 +285,21 @@ void FlagRegistry::GenManPage() {
   time_t curtime;
   curtime = time(NULL);
   struct tm loctime;
+#ifdef _WIN32
+  loctime = *gmtime(&curtime);  // NOLINT(runtime/threadsafe_fn)
+#else
   gmtime_r(&curtime, &loctime);
+#endif
   strftime(date_str, arraysize(date_str), "%B %Y", &loctime);
 
-  // Not using FilenameFromPath to avoid further dependancies
-  // This won't work on Windows as it's using the wrong path separator
+  // Not using FilenameFromPathOrPath to avoid further dependancies
   string exe_name = m_argv0;
-  string::size_type last_path_sep = m_argv0.find_last_of('/');
+#ifdef _WIN32
+  char directory_separator = '\\';
+#else
+  char directory_separator = '/';
+#endif
+  string::size_type last_path_sep = m_argv0.find_last_of(directory_separator);
   if (last_path_sep != string::npos) {
     // Don't return the path sep itself
     exe_name = m_argv0.substr(last_path_sep + 1);
