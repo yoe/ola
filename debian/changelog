@@ -6,6 +6,7 @@ ola (0.9.1-1) unstable; urgency=low
     wrong in the test suite, should the build fail.
   * Disable DummyPluginTester test, since it wants to link against
     KiNet, which no longer exists.
+  * Migrate to dh_python2 (from python-support)
 
  -- Wouter Verhelst <wouter@debian.org>  Sat, 19 Jul 2014 12:56:32 +0200
 
