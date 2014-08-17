@@ -11,9 +11,9 @@ liboladummy_la_LIBADD = ../../common/libolacommon.la
 
 # TESTS
 ##################################################
-if BUILD_TESTS
-TESTS = DummyPluginTester
-endif
+#if BUILD_TESTS
+#TESTS = DummyPluginTester
+#endif
 check_PROGRAMS = $(TESTS)
 
 DummyPluginTester_SOURCES = DummyPortTest.cpp

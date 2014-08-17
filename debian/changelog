@@ -4,6 +4,8 @@ ola (0.9.1-1) unstable; urgency=low
   * Enable "serial-tests" automake option, to avoid issues in the test
     suite. This will also allow us to more easily figure out what went
     wrong in the test suite, should the build fail.
+  * Disable DummyPluginTester test, since it wants to link against
+    KiNet, which no longer exists.
 
  -- Wouter Verhelst <wouter@debian.org>  Sat, 19 Jul 2014 12:56:32 +0200
 
