@@ -66,7 +66,6 @@ TCPConnector::TCPConnectionID TCPConnector::Connect(
   ola::io::DescriptorHandle descriptor;
   descriptor.m_handle.m_fd = sd;
   descriptor.m_type = ola::io::SOCKET_DESCRIPTOR;
-  descriptor.m_event_handle = 0;
 #else
   ola::io::DescriptorHandle descriptor = sd;
 #endif
@@ -76,7 +75,7 @@ TCPConnector::TCPConnectionID TCPConnector::Connect(
 
   if (r) {
 #ifdef _WIN32
-    if (WSAGetLastError() != WSAEINPROGRESS) {
+    if (WSAGetLastError() != WSAEWOULDBLOCK) {
 #else
     if (errno != EINPROGRESS) {
 #endif
@@ -116,6 +115,11 @@ bool TCPConnector::Cancel(TCPConnectionID id) {
   if (iter == m_connections.end())
     return false;
 
+  if (connection->timeout_id != ola::thread::INVALID_TIMEOUT) {
+    m_ss->RemoveTimeout(connection->timeout_id);
+    connection->timeout_id = ola::thread::INVALID_TIMEOUT;
+  }
+
   Timeout(iter);
   m_connections.erase(iter);
   return true;
@@ -123,8 +127,16 @@ bool TCPConnector::Cancel(TCPConnectionID id) {
 
 void TCPConnector::CancelAll() {
   ConnectionSet::iterator iter = m_connections.begin();
-  for (; iter != m_connections.end(); ++iter)
+  for (; iter != m_connections.end(); ++iter) {
+    PendingTCPConnection *connection = *iter;
+
+    if (connection->timeout_id != ola::thread::INVALID_TIMEOUT) {
+      m_ss->RemoveTimeout(connection->timeout_id);
+      connection->timeout_id = ola::thread::INVALID_TIMEOUT;
+    }
+
     Timeout(iter);
+  }
   m_connections.clear();
 }
 
@@ -132,8 +144,9 @@ void TCPConnector::CancelAll() {
  * Called when a socket becomes writeable.
  */
 void TCPConnector::SocketWritable(PendingTCPConnection *connection) {
-  // cancel timeout
+  // Cancel the timeout
   m_ss->RemoveTimeout(connection->timeout_id);
+  connection->timeout_id = ola::thread::INVALID_TIMEOUT;
   m_ss->RemoveWriteDescriptor(connection);
 
   // fetch the error code
@@ -186,7 +199,6 @@ void TCPConnector::FreePendingConnection(PendingTCPConnection *connection) {
 
 void TCPConnector::Timeout(const ConnectionSet::iterator &iter) {
   PendingTCPConnection *connection = *iter;
-  m_ss->RemoveTimeout(connection->timeout_id);
   m_ss->RemoveWriteDescriptor(connection);
   connection->Close();
   TCPConnectCallback *callback = connection->callback;
@@ -205,6 +217,7 @@ void TCPConnector::TimeoutEvent(PendingTCPConnection *connection) {
       "Timeout triggered but couldn't find the connection this refers to";
   }
 
+  connection->timeout_id = ola::thread::INVALID_TIMEOUT;
   Timeout(iter);
   m_connections.erase(iter);
 }
@@ -223,7 +236,6 @@ TCPConnector::PendingTCPConnection::PendingTCPConnection(
 #ifdef _WIN32
   m_handle.m_handle.m_fd = fd;
   m_handle.m_type = ola::io::SOCKET_DESCRIPTOR;
-  m_handle.m_event_handle = 0;
 #else
   m_handle = fd;
 #endif
