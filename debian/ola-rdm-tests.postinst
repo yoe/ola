@@ -3,28 +3,6 @@
 
 conffile="/etc/default/ola-rdm-tests"
 
-update_config_file() {
-  db_field=$1
-  config_field=$2
-
-  RET=false
-  db_get $db_field
-  if [ -n "$RET" ] ; then
-    if grep -q "^$config_field" $conffile ; then
-      # keep any admin changes, while replacing the variable content
-      sed "s/^[ ]*$config_field=\".*\"/$config_field=\"$RET\"/" < $conffile > $conffile.new && 
-      mv $conffile.new $conffile
-    else
-      echo "$config_field=\"$RET\"" >> $conffile
-    fi
-  fi
-}
-
-# Source debconf library -- we have a Depends line
-# to make sure it is there...
-. /usr/share/debconf/confmodule
-db_version 2.0
-
 case "$1" in
   configure)
   if [ -f $conffile ] ; then
@@ -40,10 +18,6 @@ case "$1" in
 RUN_DAEMON="true"
 EOF
   fi
-
-  update_config_file ola-rdm-tests/daemon RUN_DAEMON
-
-  db_stop
   ;;
 
   abort-upgrade|abort-remove|abort-deconfigure)
