@@ -51,6 +51,7 @@ MockUDPSocket::MockUDPSocket()
       m_bound_to_port(false),
       m_broadcast_set(false),
       m_port(0),
+      m_tos(0),
       m_discard_mode(false) {
 }
 
@@ -108,8 +109,7 @@ ssize_t MockUDPSocket::SendTo(const uint8_t *buffer,
   OLA_ASSERT_FALSE(m_expected_calls.empty());
   expected_call call = m_expected_calls.front();
 
-  ola::testing::ASSERT_DATA_EQUALS(__LINE__, call.data, call.size, buffer,
-                                   size);
+  OLA_ASSERT_DATA_EQUALS(call.data, call.size, buffer, size);
   OLA_ASSERT_EQ(call.address, ip_address);
   OLA_ASSERT_EQ(call.port, port);
   if (call.free_data)

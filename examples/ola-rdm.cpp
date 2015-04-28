@@ -24,6 +24,7 @@
 #include <ola/Logging.h>
 #include <ola/OlaCallbackClient.h>
 #include <ola/OlaClientWrapper.h>
+#include <ola/StringUtils.h>
 #include <ola/base/Init.h>
 #include <ola/base/SysExits.h>
 #include <ola/file/Util.h>
@@ -32,6 +33,7 @@
 #include <ola/rdm/RDMEnums.h>
 #include <ola/rdm/RDMHelper.h>
 #include <ola/rdm/UID.h>
+#include <ola/strings/Format.h>
 
 #include <algorithm>
 #include <iomanip>
@@ -136,7 +138,7 @@ void ParseOptions(int argc, char *argv[], options *opts) {
  * Display the help for get_pid
  */
 void DisplayGetPidHelp(const options &opts) {
-  cout << "usage: " << opts.cmd <<
+  cout << "Usage: " << opts.cmd <<
   " --universe <universe> --uid <uid> <pid> <value>\n"
   "\n"
   "Get the value of a pid for a device.\n"
@@ -156,7 +158,7 @@ void DisplayGetPidHelp(const options &opts) {
  * Display the help for set_pid
  */
 void DisplaySetPidHelp(const options &opts) {
-  cout << "usage: " << opts.cmd <<
+  cout << "Usage: " << opts.cmd <<
   " --universe <universe> --uid <uid> <pid> <value>\n"
   "\n"
   "Set the value of a pid for a device.\n"
@@ -221,16 +223,24 @@ class RDMController {
                         const string &rdm_data);
 
  private:
-    typedef struct {
+    struct PendingRequest {
+     public:
+      PendingRequest()
+          : universe(0),
+            uid(NULL),
+            sub_device(0),
+            pid_value(0) {
+      }
+
       unsigned int universe;
       const UID *uid;
       uint16_t sub_device;
       uint16_t pid_value;
-    } pending_request_t;
+    };
 
     ola::OlaCallbackClientWrapper m_ola_client;
     PidStoreHelper m_pid_helper;
-    pending_request_t m_pending_request;
+    PendingRequest m_pending_request;
 
     void FetchQueuedMessage();
     void PrintRemainingMessages(uint8_t message_count);
@@ -308,8 +318,8 @@ void RDMController::HandleResponse(
     cout << "Request NACKed: " <<
       ola::rdm::NackReasonToString(response_status.NackReason()) << endl;
   } else {
-    cout << "Unknown RDM response type " << std::hex <<
-        static_cast<int>(response_status.response_type) << endl;
+    cout << "Unknown RDM response type "
+         << ola::strings::ToHex(response_status.response_type) << endl;
   }
   PrintRemainingMessages(response_status.message_count);
   m_ola_client.GetSelectServer()->Terminate();

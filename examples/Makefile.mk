@@ -90,9 +90,9 @@ examples_ola_uni_stats_LDADD = $(EXAMPLE_COMMON_LIBS)
 if HAVE_NCURSES
 bin_PROGRAMS += examples/ola_dmxconsole examples/ola_dmxmonitor
 examples_ola_dmxconsole_SOURCES = examples/ola-dmxconsole.cpp
-examples_ola_dmxconsole_LDADD = $(EXAMPLE_COMMON_LIBS) -lcurses
+examples_ola_dmxconsole_LDADD = $(EXAMPLE_COMMON_LIBS) -lncurses
 examples_ola_dmxmonitor_SOURCES = examples/ola-dmxmonitor.cpp
-examples_ola_dmxmonitor_LDADD = $(EXAMPLE_COMMON_LIBS) -lcurses
+examples_ola_dmxmonitor_LDADD = $(EXAMPLE_COMMON_LIBS) -lncurses
 endif
 
 noinst_PROGRAMS += examples/ola_throughput examples/ola_latency
@@ -121,4 +121,24 @@ install-exec-hook-examples:
 	$(LN_S) -f $(bindir)/ola_rdm_get $(DESTDIR)$(bindir)/ola_rdm_set
 
 INSTALL_EXEC_HOOKS += install-exec-hook-examples
+
+# TESTS_DATA
+##################################################
+
+EXTRA_DIST += \
+    examples/testdata/dos_line_endings \
+    examples/testdata/multiple_unis \
+    examples/testdata/partial_frames \
+    examples/testdata/single_uni \
+    examples/testdata/trailing_timeout
+
+# TESTS
+##################################################
+test_scripts += examples/RecorderVerifyTest.sh
+
+examples/RecorderVerifyTest.sh: examples/Makefile.mk
+	echo "for FILE in ${srcdir}/examples/testdata/dos_line_endings ${srcdir}/examples/testdata/multiple_unis ${srcdir}/examples/testdata/partial_frames ${srcdir}/examples/testdata/single_uni ${srcdir}/examples/testdata/trailing_timeout; do echo \"Checking \$$FILE\"; ${top_builddir}/examples/ola_recorder${EXEEXT} --verify \$$FILE; STATUS=\$$?; if [ \$$STATUS -ne 0 ]; then echo \"FAIL: \$$FILE caused ola_recorder to exit with status \$$STATUS\"; exit \$$STATUS; fi; done; exit 0" > examples/RecorderVerifyTest.sh
+	chmod +x examples/RecorderVerifyTest.sh
+
+CLEANFILES += examples/RecorderVerifyTest.sh
 endif

@@ -23,18 +23,20 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include "ola/BaseTypes.h"
 #include "ola/Clock.h"
+#include "ola/Constants.h"
 #include "ola/Logging.h"
+#include "ola/base/Array.h"
 #include "ola/base/Macro.h"
+#include "ola/network/IPV4Address.h"
 #include "ola/network/Interface.h"
 #include "ola/network/InterfacePicker.h"
-#include "ola/network/IPV4Address.h"
 #include "ola/network/MACAddress.h"
 #include "ola/network/NetworkUtils.h"
+#include "ola/rdm/RDMEnums.h"
 #include "ola/rdm/ResponderHelper.h"
 #include "ola/rdm/ResponderSensor.h"
-#include "ola/rdm/RDMEnums.h"
+#include "ola/strings/Utils.h"
 
 namespace ola {
 namespace rdm {
@@ -152,7 +154,7 @@ const RDMResponse *ResponderHelper::GetDeviceInfo(
 
 const RDMResponse *ResponderHelper::GetProductDetailList(
     const RDMRequest *request,
-    const std::vector<rdm_product_detail> &product_details,
+    const vector<rdm_product_detail> &product_details,
     uint8_t queued_message_count) {
   if (request->ParamDataSize()) {
     return NackWithReason(request, NR_FORMAT_ERROR, queued_message_count);
@@ -484,9 +486,9 @@ const RDMResponse *ResponderHelper::GetSensorDefinition(
   sensor_definition.normal_min = HostToNetwork(sensor->NormalMin());
   sensor_definition.normal_max = HostToNetwork(sensor->NormalMax());
   sensor_definition.recorded_support = sensor->RecordedSupportBitMask();
-  strncpy(sensor_definition.description, sensor->Description().c_str(),
-          sizeof(sensor_definition.description));
-
+  strings::CopyToFixedLengthBuffer(sensor->Description(),
+                                   sensor_definition.description,
+                                   arraysize(sensor_definition.description));
   return GetResponseFromData(
     request,
     reinterpret_cast<const uint8_t*>(&sensor_definition),
@@ -639,7 +641,7 @@ const RDMResponse *ResponderHelper::GetListInterfaces(
     return NackWithReason(request, NR_FORMAT_ERROR, queued_message_count);
   }
 
-  std::vector<Interface> interfaces =
+  vector<Interface> interfaces =
       network_manager->GetInterfacePicker()->GetInterfaces(false);
 
   if (interfaces.size() == 0) {
@@ -801,16 +803,42 @@ const RDMResponse *ResponderHelper::GetIPV4DefaultRoute(
     const RDMRequest *request,
     const NetworkManagerInterface *network_manager,
     uint8_t queued_message_count) {
+  int32_t if_index = Interface::DEFAULT_INDEX;
   IPV4Address default_route;
-  if (!network_manager->GetIPV4DefaultRoute(&default_route)) {
+  if (!network_manager->GetIPV4DefaultRoute(&if_index, &default_route)) {
     return NackWithReason(request, NR_HARDWARE_FAULT);
   }
+
+  PACK(
+  struct ipv4_default_route_s {
+    uint32_t if_index;
+    uint32_t default_route;
+  });
+  STATIC_ASSERT(sizeof(ipv4_default_route_s) == 8);
+
+  struct ipv4_default_route_s ipv4_default_route;
+
+  if (if_index == Interface::DEFAULT_INDEX) {
+    // No default route interface index set, return special value
+    ipv4_default_route.if_index = HostToNetwork(NO_DEFAULT_ROUTE);
+  } else {
+    ipv4_default_route.if_index = HostToNetwork(if_index);
+  }
+
   if (default_route.IsWildcard()) {
     // No default route set, return special value
-    return GetUInt32Value(request, NO_DEFAULT_ROUTE, queued_message_count);
+    ipv4_default_route.default_route = HostToNetwork(NO_DEFAULT_ROUTE);
   } else {
-    return GetIPV4Address(request, default_route, queued_message_count);
+    // Already in correct byte order
+    ipv4_default_route.default_route = default_route.AsInt();
   }
+
+  return GetResponseFromData(
+      request,
+      reinterpret_cast<uint8_t*>(&ipv4_default_route),
+      sizeof(ipv4_default_route),
+      RDM_ACK,
+      queued_message_count);
 }
 
 
@@ -1010,7 +1038,7 @@ const RDMResponse *ResponderHelper::GetIPV4Address(
  */
 const RDMResponse *ResponderHelper::GetString(
     const RDMRequest *request,
-    const std::string &value,
+    const string &value,
     uint8_t queued_message_count,
     uint8_t max_length) {
   if (request->ParamDataSize()) {
@@ -1040,23 +1068,19 @@ const RDMResponse *ResponderHelper::EmptyGetResponse(
 const RDMResponse *ResponderHelper::EmptySetResponse(
     const RDMRequest *request,
     uint8_t queued_message_count) {
-  return new RDMSetResponse(
-    request->DestinationUID(),
-    request->SourceUID(),
-    request->TransactionNumber(),
-    RDM_ACK,
-    queued_message_count,
-    request->SubDevice(),
-    request->ParamId(),
-    NULL,
-    0);
+  return GetResponseFromData(request,
+                             NULL,
+                             0,
+                             RDM_ACK,
+                             queued_message_count);
 }
 
 const RDMResponse *ResponderHelper::SetString(
     const RDMRequest *request,
-    std::string *value,
-    uint8_t queued_message_count) {
-  if (request->ParamDataSize() > MAX_RDM_STRING_LENGTH) {
+    string *value,
+    uint8_t queued_message_count,
+    uint8_t max_length) {
+  if (request->ParamDataSize() > max_length) {
     return NackWithReason(request, NR_FORMAT_ERROR, queued_message_count);
   }
   const string new_label(reinterpret_cast<const char*>(request->ParamData()),

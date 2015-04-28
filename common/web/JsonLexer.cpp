@@ -30,7 +30,6 @@
 #include <memory>
 #include <string>
 #include "ola/Logging.h"
-#include "ola/StringUtils.h"
 #include "ola/web/Json.h"
 
 namespace ola {
@@ -196,6 +195,7 @@ static bool ParseNumber(const char **input, JsonParserInterface *parser) {
     switch (**input) {
       case '-':
         negative_exponent = true;
+        // fall through
       case '+':
         (*input)++;
         break;
@@ -271,7 +271,7 @@ static bool ParseArray(const char **input, JsonParserInterface *parser) {
 
     bool result = ParseTrimmedInput(input, parser);
     if (!result) {
-      OLA_INFO << "input failed";
+      OLA_INFO << "Invalid input";
       return false;
     }
 
@@ -427,7 +427,7 @@ bool ParseRaw(const char *input, JsonParserInterface *parser) {
   return !TrimWhitespace(&input);
 }
 
-bool JsonLexer::Parse(const std::string &input,
+bool JsonLexer::Parse(const string &input,
                       JsonParserInterface *parser) {
   // TODO(simon): Do we need to convert to unicode here? I think this may be
   // an issue on Windows. Consider mbstowcs.

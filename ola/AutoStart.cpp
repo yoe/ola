@@ -23,7 +23,7 @@
 #include <string.h>
 #ifdef _WIN32
 #define VC_EXTRALEAN
-#include <Windows.h>
+#include <ola/win/CleanWindows.h>
 #include <tchar.h>
 #else
 #include <sys/wait.h>
@@ -76,7 +76,7 @@ TCPSocket *ConnectToServer(unsigned short port) {
                      NULL,
                      &startup_info,
                      &process_information)) {
-    OLA_WARN << "Could not launch olad" << GetLastError();
+    OLA_WARN << "Could not launch olad " << GetLastError();
     _exit(1);
   }
 

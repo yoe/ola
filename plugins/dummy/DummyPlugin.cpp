@@ -91,8 +91,12 @@ bool DummyPlugin::StartHook() {
                    &options.number_of_network_responders))
     options.number_of_network_responders = DEFAULT_DEVICE_COUNT;
 
-  m_device = new DummyDevice(this, DEVICE_NAME, options);
-  m_device->Start();
+  std::auto_ptr<DummyDevice> device(
+      new DummyDevice(this, DEVICE_NAME, options));
+  if (!device->Start()) {
+    return false;
+  }
+  m_device = device.release();
   m_plugin_adaptor->RegisterDevice(m_device);
   return true;
 }
@@ -151,6 +155,7 @@ string DummyPlugin::Description() const {
 "\n"
 "sensor_device_count = 1\n"
 "The number of sensor-only devices to create.\n"
+"\n"
 "network_device_count = 1\n"
 "The number of network E1.37-2 devices to create.\n"
 "\n";

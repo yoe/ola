@@ -60,7 +60,8 @@ DiscoveryAgent::DiscoveryAgent(DiscoveryTargetInterface *target)
       m_branch_callback(
         ola::NewCallback(this, &DiscoveryAgent::BranchComplete)),
       m_muting_uid(0, 0),
-      m_mute_attempts(0) {
+      m_mute_attempts(0),
+      m_tree_corrupt(false) {
 }
 
 
@@ -189,7 +190,7 @@ void DiscoveryAgent::MaybeMuteNextDevice() {
 void DiscoveryAgent::IncrementalMuteComplete(bool status) {
   if (!status) {
     m_uids.RemoveUID(m_muting_uid);
-    OLA_WARN << "Mute of " << m_muting_uid << " failed, device has gone";
+    OLA_WARN << "Unable to mute " << m_muting_uid << ", device has gone";
   } else {
     OLA_DEBUG << "Muted " << m_muting_uid;
   }

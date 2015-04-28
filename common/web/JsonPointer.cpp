@@ -37,7 +37,7 @@ JsonPointer::JsonPointer(const JsonPointer &other)
       m_tokens(other.m_tokens) {
 }
 
-JsonPointer::JsonPointer(const std::string &path)
+JsonPointer::JsonPointer(const string &path)
     : m_is_valid(true) {
   if (path.empty()) {
     return;
@@ -49,7 +49,7 @@ JsonPointer::JsonPointer(const std::string &path)
   }
 
   Tokens escaped_tokens;
-  StringSplit(path.substr(1), escaped_tokens, "/");
+  StringSplit(path.substr(1), &escaped_tokens, "/");
 
   Tokens::const_iterator iter = escaped_tokens.begin();
   for (; iter != escaped_tokens.end(); ++iter) {

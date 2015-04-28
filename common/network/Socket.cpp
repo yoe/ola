@@ -32,7 +32,7 @@
 #endif
 
 #ifdef _WIN32
-#include <Winsock2.h>
+#include <ola/win/CleanWinSock2.h>
 #include <Ws2tcpip.h>
 #include <winioctl.h>
 #include <Mswsock.h>
@@ -148,7 +148,7 @@ bool UDPSocket::Bind(const IPV4SocketAddress &endpoint) {
 #else
   if (bind(m_handle, &server_address, sizeof(server_address)) == -1) {
 #endif
-    OLA_WARN << "Failed to bind " << endpoint << ", " << strerror(errno);
+    OLA_WARN << "bind(" << endpoint << "): " << strerror(errno);
     return false;
   }
   m_bound_to_port = true;

@@ -23,7 +23,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "ola/BaseTypes.h"
+#include "ola/Constants.h"
 #include "ola/Logging.h"
 #include "ola/base/Array.h"
 #include "ola/network/NetworkUtils.h"
@@ -40,9 +40,6 @@ namespace ola {
 namespace plugin {
 namespace usbpro {
 
-using std::auto_ptr;
-using std::map;
-using std::string;
 using ola::network::NetworkToHost;
 using ola::network::HostToNetwork;
 using ola::rdm::RDMCommand;
@@ -51,7 +48,10 @@ using ola::rdm::RDMDiscoveryCallback;
 using ola::rdm::RDMRequest;
 using ola::rdm::UID;
 using ola::rdm::UIDSet;
-
+using std::auto_ptr;
+using std::map;
+using std::string;
+using std::vector;
 
 /*
  * New DMX TRI Widget
@@ -129,7 +129,7 @@ bool DmxTriWidgetImpl::SendDMX(const DmxBuffer &buffer) {
  */
 void DmxTriWidgetImpl::SendRDMRequest(const ola::rdm::RDMRequest *request,
                                       ola::rdm::RDMCallback *on_complete) {
-  std::vector<string> packets;
+  vector<string> packets;
   if (IsDUBRequest(request) && !m_use_raw_rdm) {
     on_complete->Run(ola::rdm::RDM_PLUGIN_DISCOVERY_NOT_SUPPORTED, NULL,
                      packets);
@@ -333,7 +333,7 @@ void DmxTriWidgetImpl::SendDiscoveryAuto() {
   uint8_t command_id = DISCOVER_AUTO_COMMAND_ID;
   if (!SendCommandToTRI(EXTENDED_COMMAND_LABEL, &command_id,
                         sizeof(command_id))) {
-    OLA_WARN << "Failed to begin RDM discovery";
+    OLA_WARN << "Unable to begin RDM discovery";
     RDMDiscoveryCallback *callback = m_discovery_callback;
     m_discovery_callback = NULL;
     RunDiscoveryCallback(callback);
@@ -587,7 +587,7 @@ void DmxTriWidgetImpl::HandleDiscoverStatResponse(uint8_t return_code,
         MaybeSendNextRequest();
       } else {
         RDMDiscoveryCallback *callback = m_discovery_callback;
-        m_discovery_callback= NULL;
+        m_discovery_callback = NULL;
         RunDiscoveryCallback(callback);
       }
     }
@@ -595,7 +595,7 @@ void DmxTriWidgetImpl::HandleDiscoverStatResponse(uint8_t return_code,
     // These are all fatal
     switch (return_code) {
       case EC_RESPONSE_MUTE:
-        OLA_WARN << "Failed to mute device, aborting discovery";
+        OLA_WARN << "Unable to mute device, aborting discovery";
         break;
       case EC_RESPONSE_DISCOVERY:
         OLA_WARN <<
@@ -658,6 +658,7 @@ void DmxTriWidgetImpl::HandleRemoteUIDResponse(uint8_t return_code,
 
 /*
  * Handle the response to a raw RDM command
+ * data will be NULL, if length is 0.
  */
 void DmxTriWidgetImpl::HandleRawRDMResponse(uint8_t return_code,
                                             const uint8_t *data,
@@ -685,8 +686,10 @@ void DmxTriWidgetImpl::HandleRawRDMResponse(uint8_t return_code,
     return;
   }
 
-  std::vector<string> packets;
-  packets.push_back(string(reinterpret_cast<const char*>(data), length));
+  vector<string> packets;
+  if (data) {
+    packets.push_back(string(reinterpret_cast<const char*>(data), length));
+  }
 
   // handle responses to DUB commands
   if (IsDUBRequest(request.get())) {
@@ -833,7 +836,7 @@ void DmxTriWidgetImpl::HandleGenericRDMResponse(uint8_t return_code,
              << static_cast<int>(return_code);
     code = ola::rdm::RDM_INVALID_RESPONSE;
   }
-  std::vector<string> packets;
+  vector<string> packets;
   // Unfortunately we don't get to see the raw response here, which limits the
   // use of the TRI for testing. For testing use the raw mode.
   callback->Run(code, response, packets);
@@ -913,7 +916,7 @@ void DmxTriWidgetImpl::HandleRDMError(ola::rdm::rdm_response_code error_code) {
   delete m_pending_rdm_request;
   m_pending_rdm_request = NULL;
   m_rdm_request_callback = NULL;
-  std::vector<string> packets;
+  vector<string> packets;
   if (callback)
     callback->Run(error_code, NULL, packets);
 }

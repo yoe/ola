@@ -25,8 +25,7 @@
 #include <string>
 #include <vector>
 #include "common/rdm/FakeNetworkManager.h"
-#include "ola/BaseTypes.h"
-#include "ola/Clock.h"
+#include "ola/Constants.h"
 #include "ola/Logging.h"
 #include "ola/base/Array.h"
 #include "ola/network/IPV4Address.h"
@@ -140,6 +139,7 @@ NetworkResponder::NetworkResponder(const UID &uid)
 
   m_network_manager.reset(new FakeNetworkManager(
       interfaces,
+      1,
       IPV4Address::FromStringOrDie("10.0.0.254"),
       "foo",
       "bar.com",

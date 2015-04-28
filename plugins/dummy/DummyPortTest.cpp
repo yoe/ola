@@ -29,7 +29,7 @@
 #include <string>
 #include <vector>
 
-#include "ola/BaseTypes.h"
+#include "ola/Constants.h"
 #include "ola/Logging.h"
 #include "ola/network/NetworkUtils.h"
 #include "ola/rdm/OpenLightingEnums.h"
@@ -54,7 +54,6 @@ using ola::rdm::RDMSetRequest;
 using ola::rdm::RDMSetResponse;
 using ola::rdm::UID;
 using ola::rdm::UIDSet;
-using ola::testing::ASSERT_DATA_EQUALS;
 using std::min;
 using std::string;
 using std::vector;
@@ -164,11 +163,10 @@ void DummyPortTest::HandleRDMResponse(ola::rdm::rdm_response_code code,
                                       const vector<string>&) {
   OLA_ASSERT_EQ(m_expected_code, code);
   if (m_expected_response) {
-    ASSERT_DATA_EQUALS(__LINE__,
-                       m_expected_response->ParamData(),
-                       m_expected_response->ParamDataSize(),
-                       response->ParamData(),
-                       response->ParamDataSize());
+    OLA_ASSERT_DATA_EQUALS(m_expected_response->ParamData(),
+                           m_expected_response->ParamDataSize(),
+                           response->ParamData(),
+                           response->ParamDataSize());
     OLA_ASSERT(*m_expected_response == *response);
   } else {
     OLA_ASSERT_NULL(response);
@@ -256,7 +254,6 @@ void DummyPortTest::testSupportedParams() {
 #endif
     ola::rdm::PID_LAMP_STRIKES,
     ola::rdm::PID_REAL_TIME_CLOCK,
-    ola::rdm::OLA_MANUFACTURER_PID_CODE_VERSION,
     ola::rdm::PID_LIST_INTERFACES,
     ola::rdm::PID_INTERFACE_LABEL,
     ola::rdm::PID_INTERFACE_HARDWARE_ADDRESS_TYPE1,
@@ -265,6 +262,7 @@ void DummyPortTest::testSupportedParams() {
     ola::rdm::PID_DNS_NAME_SERVER,
     ola::rdm::PID_DNS_HOSTNAME,
     ola::rdm::PID_DNS_DOMAIN_NAME,
+    ola::rdm::OLA_MANUFACTURER_PID_CODE_VERSION,
   };
 
   for (unsigned int i = 0; i < sizeof(supported_params) / 2; i++)

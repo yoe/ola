@@ -26,19 +26,25 @@
 namespace ola {
 namespace rdm {
 
-UID* UID::FromString(const std::string &uid) {
-  std::vector<std::string> tokens;
-  ola::StringSplit(uid, tokens, ":");
+using std::string;
+using std::vector;
 
-  if (tokens.size() != 2 || tokens[0].size() != 4 || tokens[1].size() != 8)
+UID* UID::FromString(const string &uid) {
+  vector<string> tokens;
+  ola::StringSplit(uid, &tokens, ":");
+
+  if (tokens.size() != 2 || tokens[0].size() != 4 || tokens[1].size() != 8) {
     return NULL;
+  }
 
   uint16_t esta_id;
   unsigned int device_id;
-  if (!ola::HexStringToInt(tokens[0], &esta_id))
+  if (!ola::HexStringToInt(tokens[0], &esta_id)) {
     return NULL;
-  if (!ola::HexStringToInt(tokens[1], &device_id))
+  }
+  if (!ola::HexStringToInt(tokens[1], &device_id)) {
     return NULL;
+  }
 
   return new UID(esta_id, device_id);
 }

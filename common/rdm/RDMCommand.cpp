@@ -88,7 +88,7 @@ bool RDMCommand::operator==(const RDMCommand &other) const {
 }
 
 
-std::string RDMCommand::ToString() const {
+string RDMCommand::ToString() const {
   std::ostringstream str;
   str << m_source << " -> " << m_destination << ", Trans # " <<
     static_cast<int>(m_transaction_number) << ", Port ID " <<
@@ -351,7 +351,7 @@ RDMRequest* RDMRequest::InflateFromData(const uint8_t *data,
 /**
  * Inflate from some data
  */
-RDMRequest* RDMRequest::InflateFromData(const std::string &data) {
+RDMRequest* RDMRequest::InflateFromData(const string &data) {
   return InflateFromData(reinterpret_cast<const uint8_t*>(data.data()),
                          data.size());
 }
@@ -519,7 +519,7 @@ RDMResponse* RDMResponse::InflateFromData(const uint8_t *data,
 /**
  * Inflate from some data
  */
-RDMResponse* RDMResponse::InflateFromData(const std::string &data,
+RDMResponse* RDMResponse::InflateFromData(const string &data,
                                           rdm_response_code *response_code,
                                           const RDMRequest *request) {
   return InflateFromData(reinterpret_cast<const uint8_t*>(data.data()),
@@ -532,7 +532,7 @@ RDMResponse* RDMResponse::InflateFromData(const std::string &data,
 /**
  * Inflate from some data
  */
-RDMResponse* RDMResponse::InflateFromData(const std::string &data,
+RDMResponse* RDMResponse::InflateFromData(const string &data,
                                           rdm_response_code *response_code,
                                           const RDMRequest *request,
                                           uint8_t transaction_number) {
@@ -608,12 +608,15 @@ RDMResponse* RDMResponse::CombineResponses(const RDMResponse *response1,
 // Helper functions follow
 
 /**
- * Guess the type of an RDM message, so we know whether we should unpack it as
- * a request or response. This doesn't perform any data checking (that's left
- * to the Inflate* methods).
- * @param type_arg a pointer to a rdm_message_type variable which is set to
- * RDM_REQUEST or RDM_RESPONSE.
- * @param data a pointer to the rdm message (excluding the start code)
+ * @brief Guess the type of an RDM message
+ *
+ * Used so we know whether we should unpack it as a request or response. This
+ * doesn't perform any data checking (that's left to the Inflate* methods).
+ * @param[out] type_arg a pointer to a rdm_message_type variable which is set
+ * to RDM_REQUEST or RDM_RESPONSE.
+ * @param[out] command_class_arg a pointer to a RDMCommandClass variable which
+ * is set to the command class type
+ * @param data a pointer to the RDM message (excluding the start code)
  * @param length length of the rdm data
  * @returns true if we could determine the type, false otherwise
  */
@@ -668,49 +671,24 @@ bool GuessMessageType(rdm_message_type *type_arg,
   return false;
 }
 
-
-/*
- * Generate a NACK response with a reason code
- */
 RDMResponse *NackWithReason(const RDMRequest *request,
                             rdm_nack_reason reason_enum,
                             uint8_t outstanding_messages) {
   uint16_t reason = ola::network::HostToNetwork(static_cast<uint16_t>(
     reason_enum));
-  if (request->CommandClass() == ola::rdm::RDMCommand::GET_COMMAND) {
-    return new ola::rdm::RDMGetResponse(
-      request->DestinationUID(),
-      request->SourceUID(),
-      request->TransactionNumber(),
-      RDM_NACK_REASON,
-      outstanding_messages,
-      request->SubDevice(),
-      request->ParamId(),
-      reinterpret_cast<uint8_t*>(&reason),
-      sizeof(reason));
-  } else  {
-    return new ola::rdm::RDMSetResponse(
-      request->DestinationUID(),
-      request->SourceUID(),
-      request->TransactionNumber(),
-      RDM_NACK_REASON,
-      outstanding_messages,
-      request->SubDevice(),
-      request->ParamId(),
-      reinterpret_cast<uint8_t*>(&reason),
-      sizeof(reason));
-  }
+  return GetResponseFromData(request,
+                             reinterpret_cast<uint8_t*>(&reason),
+                             sizeof(reason),
+                             RDM_NACK_REASON,
+                             outstanding_messages);
 }
 
-/*
- * Generate a ACK Response with some data
- */
 RDMResponse *GetResponseFromData(const RDMRequest *request,
                                  const uint8_t *data,
                                  unsigned int length,
                                  rdm_response_type type,
                                  uint8_t outstanding_messages) {
-  // we can reuse GetResponseWithPid
+  // We can reuse GetResponseWithPid
   return GetResponseWithPid(request,
                             request->ParamId(),
                             data,
@@ -719,10 +697,6 @@ RDMResponse *GetResponseFromData(const RDMRequest *request,
                             outstanding_messages);
 }
 
-
-/**
- * Construct a RDM response from a RDMRequest object.
- */
 RDMResponse *GetResponseWithPid(const RDMRequest *request,
                                 uint16_t pid,
                                 const uint8_t *data,
@@ -731,6 +705,7 @@ RDMResponse *GetResponseWithPid(const RDMRequest *request,
                                 uint8_t outstanding_messages) {
   switch (request->CommandClass()) {
     case RDMCommand::GET_COMMAND:
+      // coverity[SWAPPED_ARGUMENTS]
       return new RDMGetResponse(
         request->DestinationUID(),
         request->SourceUID(),
@@ -742,6 +717,7 @@ RDMResponse *GetResponseWithPid(const RDMRequest *request,
         data,
         length);
     case RDMCommand::SET_COMMAND:
+      // coverity[SWAPPED_ARGUMENTS]
       return new RDMSetResponse(
         request->DestinationUID(),
         request->SourceUID(),
@@ -753,6 +729,7 @@ RDMResponse *GetResponseWithPid(const RDMRequest *request,
         data,
         length);
     case RDMCommand::DISCOVER_COMMAND:
+      // coverity[SWAPPED_ARGUMENTS]
       return new RDMDiscoveryResponse(
         request->DestinationUID(),
         request->SourceUID(),
@@ -770,7 +747,7 @@ RDMResponse *GetResponseWithPid(const RDMRequest *request,
 
 
 /**
- * Inflate a discovery request.
+ * @brief Inflate a discovery request.
  */
 RDMDiscoveryRequest* RDMDiscoveryRequest::InflateFromData(
     const uint8_t *data,
@@ -810,7 +787,7 @@ RDMDiscoveryRequest* RDMDiscoveryRequest::InflateFromData(
  * Inflate a discovery request from some data.
  */
 RDMDiscoveryRequest* RDMDiscoveryRequest::InflateFromData(
-    const std::string &data) {
+    const string &data) {
   return InflateFromData(reinterpret_cast<const uint8_t*>(data.data()),
                          data.size());
 }
@@ -920,7 +897,7 @@ RDMDiscoveryResponse* RDMDiscoveryResponse::InflateFromData(
  * Inflate a discovery response from some data.
  */
 RDMDiscoveryResponse* RDMDiscoveryResponse::InflateFromData(
-    const std::string &data) {
+    const string &data) {
   return InflateFromData(reinterpret_cast<const uint8_t*>(data.data()),
                          data.size());
 }

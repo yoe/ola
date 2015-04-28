@@ -19,7 +19,7 @@
  */
 
 typedef int socklen_t;
-#include <winsock2.h>
+#include <ola/win/CleanWinSock2.h>
 #include <Lm.h>
 #include <iphlpapi.h>
 #include <unistd.h>
@@ -48,7 +48,7 @@ vector<Interface> WindowsInterfacePicker::GetInterfaces(
   uint32_t net, mask;
 
   if (include_loopback) {
-    OLA_WARN << "Loopback interface inclusion requested. Loopback might not"
+    OLA_WARN << "Loopback interface inclusion requested. Loopback might not "
              << "exist on Windows";
   }
 
