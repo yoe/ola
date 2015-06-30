@@ -12,6 +12,12 @@ ola (0.9.6~0.9.5-517-gbc07684-1) unstable; urgency=medium
   * Incorporate NMU.
     - Remove patch for #769690 (integrated upstream).
   * debian/source/include-binaries: remove, no longer necessary
+  * configure.ac: revert change to add option serial-tests to automake
+    initialization. This was added when a previous version of ola kept
+    failing on the bigendian architectures, but there is an environment
+    variable VERBOSE that we can set to get the same diagnostics
+    instead, so use that (and stop diverting from upstream on this
+    part).
 
  -- Wouter Verhelst <wouter@debian.org>  Tue, 30 Jun 2015 10:04:28 +0200
 

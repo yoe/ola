@@ -8,6 +8,7 @@
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
+export VERBOSE=1
 
 %:
 	dh $@ --parallel --with autotools_dev,autoreconf,bash_completion,python2
