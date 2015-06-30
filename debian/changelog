@@ -6,6 +6,8 @@ ola (0.9.6~0.9.5-517-gbc07684-1) unstable; urgency=medium
     once that's ready. Closes: #778038.
   * debian/rules: remove override_dh_autoreconf target (no longer relevant due
     to upstream changes)
+  * debian/libola*.install: remove reference to /usr/lib/*/olad which no longer
+    exists.
 
  -- Wouter Verhelst <wouter@debian.org>  Tue, 30 Jun 2015 10:04:28 +0200
 
