@@ -8,6 +8,7 @@ ola (0.9.6~0.9.5-517-gbc07684-1) unstable; urgency=medium
     to upstream changes)
   * debian/libola*.install: remove reference to /usr/lib/*/olad which no longer
     exists.
+  * debian/rules: add --parallel
   * Incorporate NMU.
     - Remove patch for #769690 (integrated upstream).
 
