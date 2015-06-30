@@ -3,11 +3,13 @@ ola (0.9.6~0.9.5-517-gbc07684-1) unstable; urgency=medium
   * New snapshot from upstream. Upstream is almost ready with 0.9.6, but
     not quite. However, since we have RC bugs open which are fixed in
     0.9.6, upload this snapshot for now. We'll upload the full 0.9.6
-    once that's ready. Closes: #778038.
+    once that's ready. Closes: #778038, #769690.
   * debian/rules: remove override_dh_autoreconf target (no longer relevant due
     to upstream changes)
   * debian/libola*.install: remove reference to /usr/lib/*/olad which no longer
     exists.
+  * Incorporate NMU.
+    - Remove patch for #769690 (integrated upstream).
 
  -- Wouter Verhelst <wouter@debian.org>  Tue, 30 Jun 2015 10:04:28 +0200
 
@@ -41,6 +43,24 @@ ola (0.9.2-1) unstable; urgency=low
   * Remove debconf usage from ola-rdm-tests postinst; Closes: #767676.
 
  -- RenZO <renzo@imaginux.com>  Wed, 20 Aug 2014 14:56:45 +0200
+
+ola (0.9.1-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload
+  * Remove debconf calls from ola-rdm-tests postinst (Closes: #767676)
+  * Ship /etc/ola within ola & ola-rdm-tests packages (Closes: #769331)
+  * Add a patch which fix failing test when running in pbuilder
+    (Closes: #769690)
+  * Fix other important issues:
+    - Remove the check for $RUN_DAEMON from both ini scripts olad and
+      rdm_test_server (Package maintainer disagree about this way of
+      controling service)
+    - Remove ola-rdm-tests postinst since its only purpose was to provide
+      /etc/default/ola-rdm-tests
+    - Add postrm scripts for packages ola & ola-rdm-tests to fully remove
+      configuration files so that piuparts tests can pass
+
+ -- Jean Baptiste Favre <debian@jbfavre.org>  Sun, 16 Nove 2014 17:44:18 +0100
 
 ola (0.9.1-1) unstable; urgency=low
 
