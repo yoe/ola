@@ -11,6 +11,7 @@ ola (0.9.6~0.9.5-517-gbc07684-1) unstable; urgency=medium
   * debian/rules: add --parallel
   * Incorporate NMU.
     - Remove patch for #769690 (integrated upstream).
+  * debian/source/include-binaries: remove, no longer necessary
 
  -- Wouter Verhelst <wouter@debian.org>  Tue, 30 Jun 2015 10:04:28 +0200
 
