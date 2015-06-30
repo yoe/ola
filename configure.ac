@@ -480,6 +480,10 @@ have_microhttpd="no"
 AS_IF([test "x$enable_http" != xno],
       [PKG_CHECK_MODULES([libmicrohttpd], [libmicrohttpd],
                          [have_microhttpd="yes"], [true])])
+
+AS_IF([test "x$enable_http" = xyes && test "x$have_microhttpd" != xyes],
+      AC_MSG_ERROR([--enable-http was given but libmicrohttpd was not found.]))
+
 AM_CONDITIONAL([HAVE_LIBMICROHTTPD], [test "x$have_microhttpd" = xyes])
 AS_IF([test "x$have_microhttpd" = xyes],
       [AC_DEFINE([HAVE_LIBMICROHTTPD], [1],
@@ -663,6 +667,11 @@ AC_ARG_ENABLE(
 # knows what to link against.
 PLUGINS=""
 
+# Force enable_usbdmx to yes when Ja Rule is explicitly requested.
+AS_IF([test "x$enable_ja_rule" = xyes],
+      [AS_ECHO(["Ja Rule is enabled, enabling the usbdmx plugin."])]
+      [enable_usbdmx="yes"])
+
 PLUGIN_SUPPORT(artnet, USE_ARTNET)
 PLUGIN_SUPPORT(dmx4linux, USE_DMX4LINUX, [$have_dmx4linux])
 PLUGIN_SUPPORT(dummy, USE_DUMMY)
@@ -717,8 +726,21 @@ AC_SUBST(OLA_CLIENT_LIBS)
 
 # Extra tools
 #####################################################
-AM_CONDITIONAL([BUILD_JA_RULE],
-               [test "x$enable_ja_rule" = xyes && test "x$have_libusb" = xyes])
+AS_IF([test "x$enable_ja_rule" = xyes && test "x$enable_usbdmx" = xno],
+      [AC_MSG_ERROR([Ja Rule requires the usbdmx plugin, but it could not be enabled.])])
+AS_IF([test "x$enable_ja_rule" = xyes && test "x$have_libusb" = xno],
+      [AC_MSG_ERROR([Ja Rule requires libusb, but it was not found on your system.])])
+AS_IF([test "x$enable_ja_rule" = xyes && test "x$have_libusb_hotplug_api" = xno],
+      [AC_MSG_ERROR([Ja Rule requires libusb to have the hotplug capability (versions 1.0.16 \
+and above), but the version found on your system doesn't appear to have it.])])
+
+AM_CONDITIONAL([BUILD_JA_RULE], [test "x$enable_ja_rule" = xyes])
+
+# Status just for configure
+BUILDING_JA_RULE='no'
+if test "x$enable_ja_rule" = xyes; then
+  BUILDING_JA_RULE='yes'
+fi
 
 # Output
 #####################################################
@@ -735,7 +757,7 @@ AC_CONFIG_LINKS([python/ola/PidStore.py:python/ola/PidStore.py
                  python/ola/UID.py:python/ola/UID.py
                  python/ola/__init__.py:python/ola/__init__.py])
 
-# Non-makefile generted files.
+# Non-makefile generated files.
 AC_CONFIG_FILES([include/ola/base/Version.h
                  libola.pc
                  libolaserver.pc
@@ -763,7 +785,8 @@ Python API: ${enable_python_libs}
 Java API: ${enable_java_libs}
 Enable HTTP Server: ${have_microhttpd}
 RDM Responder Tests: ${enable_rdm_tests}
-Enabled Plugins: ${PLUGINS}
+Ja Rule: ${BUILDING_JA_RULE}
+Enabled Plugins:${PLUGINS}
 
 Now type 'make @<:@<target>@:>@'
   where the optional <target> is:
