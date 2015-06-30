@@ -1,3 +1,12 @@
+ola (0.9.6~0.9.5-517-gbc07684-1) unstable; urgency=medium
+
+  * New snapshot from upstream. Upstream is almost ready with 0.9.6, but
+    not quite. However, since we have RC bugs open which are fixed in
+    0.9.6, upload this snapshot for now. We'll upload the full 0.9.6
+    once that's ready. Closes: #778038.
+
+ -- Wouter Verhelst <wouter@debian.org>  Tue, 30 Jun 2015 10:04:28 +0200
+
 ola (0.9.5-1) unstable; urgency=low
 
   * New upstream release
