@@ -1,9 +1,6 @@
 ola (0.9.6-1) unstable; urgency=medium
 
-  * New upstream release. Upstream is almost ready with 0.9.6, but
-    not quite. However, since we have RC bugs open which are fixed in
-    0.9.6, upload this snapshot for now. We'll upload the full 0.9.6
-    once that's ready. Closes: #778038, #769690.
+  * New upstream release. Closes: #778038, #769690.
   * debian/rules: remove override_dh_autoreconf target (no longer relevant due
     to upstream changes)
   * debian/libola*.install: remove reference to /usr/lib/*/olad which no longer
