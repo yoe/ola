@@ -1,3 +1,10 @@
+ola (0.9.6-3) unstable; urgency=medium
+
+  * cherry-pick 3eab3821 from upstream git HEAD to fix test suite on
+    little-endian architectures.
+
+ -- Wouter Verhelst <wouter@debian.org>  Wed, 08 Jul 2015 23:11:03 +0200
+
 ola (0.9.6-2) unstable; urgency=medium
 
   * plugins/usbdmx/LibUsbThreadTest.cpp: don't segfault when we can't access
