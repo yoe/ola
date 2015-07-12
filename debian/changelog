@@ -81,7 +81,7 @@ ola (0.9.1-1.1) unstable; urgency=medium
     - Add postrm scripts for packages ola & ola-rdm-tests to fully remove
       configuration files so that piuparts tests can pass
 
- -- Jean Baptiste Favre <debian@jbfavre.org>  Sun, 16 Nove 2014 17:44:18 +0100
+ -- Jean Baptiste Favre <debian@jbfavre.org>  Sun, 16 Nov 2014 17:44:18 +0100
 
 ola (0.9.1-1) unstable; urgency=low
 
