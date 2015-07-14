@@ -1,3 +1,9 @@
+ola (0.9.7-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Wouter Verhelst <wouter@debian.org>  Tue, 14 Jul 2015 11:28:09 +0200
+
 ola (0.9.6-3) unstable; urgency=medium
 
   * cherry-pick 3eab3821 from upstream git HEAD to fix test suite on
