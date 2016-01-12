@@ -1,8 +1,11 @@
 ola (0.10.0-1) unstable; urgency=low
 
   * New upstream release
+  * Make build-dependency on libmicrohttpd-dev be versioned on the
+    latest version, so that its dependencies are in order and detection
+    doesn't fail. Closes: #804427.
 
- -- Simon Newton <nomis52@gmail.com>  Sun, 03 Jan 2016 15:34:49 -0700
+ -- Wouter Verhelst <wouter@debian.org>  Tue, 12 Jan 2016 18:11:26 +0100
 
 ola (0.9.8-1) unstable; urgency=low
 
