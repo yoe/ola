@@ -2,7 +2,7 @@ ola (0.9.8-1) unstable; urgency=low
 
   * New upstream release
 
- -- Simon Newton <nomis52@gmail.com>  Wed, 30 Sep 2015 19:28:21 -0700
+ -- Wouter Verhelst <wouter@debian.org>  Thu, 22 Oct 2015 12:30:49 +0200
 
 ola (0.9.7-2) never released; urgency=medium
 
