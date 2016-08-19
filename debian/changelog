@@ -1,6 +1,10 @@
 ola (0.10.1-1) unstable; urgency=low
 
+  [ Simon Newton ]
   * New upstream release
+
+  [ Wouter Verhelst ]
+  * Add libncurses5-dev to Build-Depends; Closes: #830508.
 
  -- Simon Newton <nomis52@gmail.com>  Sun, 29 Feb 2016 07:51:00 -0700
 
