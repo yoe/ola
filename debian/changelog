@@ -1,3 +1,9 @@
+ola (0.10.2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Simon Newton <nomis52@gmail.com>  Sat, 21 May 2016 22:27:00 +0100
+
 ola (0.10.1-1) unstable; urgency=low
 
   [ Simon Newton ]
@@ -30,7 +36,6 @@ ola (0.9.7-2) never released; urgency=medium
     target.
 
  -- Wouter Verhelst <wouter@debian.org>  Wed, 09 Sep 2015 09:51:36 +0200
-
 
 ola (0.9.7-1) unstable; urgency=low
 
