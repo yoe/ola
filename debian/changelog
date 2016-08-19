@@ -1,6 +1,11 @@
 ola (0.10.2-1) unstable; urgency=low
 
+  [ Simon Newton ]
   * New upstream release
+
+  [ Wouter Verhelst ]
+  * debian/rules: add -Wno-error=deprecated-declarations to configure
+    arguments, so that we can build at least, with GCC6. Closes: #831103.
 
  -- Simon Newton <nomis52@gmail.com>  Sat, 21 May 2016 22:27:00 +0100
 
