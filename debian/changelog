@@ -1,3 +1,10 @@
+ola (0.10.2-2) unstable; urgency=medium
+
+  * debian/control: add python-numpy to build-depends, add
+    -Wno-error=unused-parameter. Closes: #835433.
+
+ -- Wouter Verhelst <wouter@debian.org>  Fri, 26 Aug 2016 10:43:06 +0200
+
 ola (0.10.2-1) unstable; urgency=low
 
   [ Simon Newton ]
