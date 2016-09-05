@@ -1,3 +1,10 @@
+ola (0.10.2-3) unstable; urgency=medium
+
+  * Cherry-pick 4 commits from upstream git to fix include issues on
+    mips*. Closes: #836383.
+
+ -- Wouter Verhelst <wouter@debian.org>  Mon, 05 Sep 2016 22:03:05 +0200
+
 ola (0.10.2-2) unstable; urgency=medium
 
   * debian/control: add python-numpy to build-depends, add
