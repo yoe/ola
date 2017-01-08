@@ -1,3 +1,9 @@
+ola (0.10.3-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Simon Newton <nomis52@gmail.com>  Tue, 06 Dec 2016 00:46:00 +0000
+
 ola (0.10.2-3) unstable; urgency=medium
 
   * Cherry-pick 4 commits from upstream git to fix include issues on
