@@ -1,8 +1,14 @@
-ola (0.10.3-1) unstable; urgency=low
+ola (0.10.3-1) UNRELEASED; urgency=low
 
+  [ Simon Newton ]
   * New upstream release
 
- -- Simon Newton <nomis52@gmail.com>  Tue, 06 Dec 2016 00:46:00 +0000
+  [ Wouter Verhelst ]
+  * debian/ola.udev: apply patch to allow all console users access to
+    the DMX devices, when using systemd. Thanks, Petter Reinholdtsen;
+    Closes: #840389.
+
+ -- Wouter Verhelst <wouter@debian.org>  Sun, 08 Jan 2017 10:49:46 +0100
 
 ola (0.10.2-3) unstable; urgency=medium
 
