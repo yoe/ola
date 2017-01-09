@@ -2,6 +2,8 @@ ola (0.10.3-1) UNRELEASED; urgency=low
 
   [ Simon Newton ]
   * New upstream release
+  - Clarifies documentation for ola_set_dmx and ola_streaming_client; Closes:
+    #830972.
 
   [ Wouter Verhelst ]
   * debian/ola.udev: apply patch to allow all console users access to
