@@ -20,5 +20,11 @@ override_dh_installinit:
 	dh_installinit -p ola --name=olad
 	dh_installinit -p ola-rdm-tests --name=rdm_test_server
 
+override_dh_install:
+	dh_install -a
+	rm -f debian/ola-rdm-tests/usr/share/ola/rdm-server/jquery-1.7.2.min.js
+	rm -f debian/ola-rdm-tests/usr/share/ola/rdm-server/jquery-ui-1.8.21.custom.min.js
+	rm -f debian/ola-rdm-tests/usr/share/ola/rdm-server/jquery-ui-1.8.21.custom.css
+
 override_dh_makeshlibs:
 	dh_makeshlibs -V
