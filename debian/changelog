@@ -9,6 +9,7 @@ ola (0.10.3-1) UNRELEASED; urgency=low
   * debian/ola.udev: apply patch to allow all console users access to
     the DMX devices, when using systemd. Thanks, Petter Reinholdtsen;
     Closes: #840389.
+  * debian/control: bump Standards-Version to 3.9.8 (nothing relevant for ola)
   * debian/ola-rdm-tests.link: rename to ola-rdm-tests.links, fix paths
   * debian/rules: remove shipped jquery and jquery-ui javascript files
     in favour of the above links
