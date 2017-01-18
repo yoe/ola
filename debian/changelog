@@ -1,4 +1,4 @@
-ola (0.10.3-1) UNRELEASED; urgency=low
+ola (0.10.3-1) unstable; urgency=low
 
   [ Simon Newton ]
   * New upstream release
@@ -15,7 +15,7 @@ ola (0.10.3-1) UNRELEASED; urgency=low
     in favour of the above links
   * The above two Closes: #790886.
 
- -- Wouter Verhelst <wouter@debian.org>  Sun, 08 Jan 2017 10:49:46 +0100
+ -- Wouter Verhelst <wouter@debian.org>  Wed, 18 Jan 2017 18:25:44 +0100
 
 ola (0.10.2-3) unstable; urgency=medium
 
