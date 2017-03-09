@@ -1,4 +1,4 @@
-ola (0.10.3.nojsmin-1) UNRELEASED; urgency=medium
+ola (0.10.3.nojsmin-1) unstable; urgency=medium
 
   * Drop all minified javascript, and repackage as a 'nojsmin' tarball.
     Don't call it .dfsg.tar.gz, because it has *nothing* to do with any
@@ -12,7 +12,7 @@ ola (0.10.3.nojsmin-1) UNRELEASED; urgency=medium
   * debian/control: add dependencies on lsb-base for packages requiring it,
     silencing lintian
 
- -- Wouter Verhelst <wouter@debian.org>  Thu, 09 Mar 2017 11:21:57 +0100
+ -- Wouter Verhelst <wouter@debian.org>  Thu, 09 Mar 2017 12:42:10 +0100
 
 ola (0.10.3-1) unstable; urgency=low
 
