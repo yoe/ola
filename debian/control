@@ -61,7 +61,7 @@ Description: Open Lighting Architecture - RDM Responder Tests
 Package: ola
 Section: electronics
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, adduser
+Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, libjs-jquery, libjs-angularjs, libjs-bootstrap
 Suggests: bash-completion
 Description: Open Lighting Architecture
  The DMX512 standard for Digital MultipleX is used for digital
