@@ -1,3 +1,12 @@
+ola (0.10.3.nojsmin-1) UNRELEASED; urgency=medium
+
+  * Drop all minified javascript, and repackage as a 'nojsmin' tarball.
+    Don't call it .dfsg.tar.gz, because it has *nothing* to do with any
+    reasonable interpretation of the DFSG, only with some armchair
+    lawyering. Closes: #760414.
+
+ -- Wouter Verhelst <wouter@debian.org>  Thu, 09 Mar 2017 11:21:57 +0100
+
 ola (0.10.3-1) unstable; urgency=low
 
   [ Simon Newton ]
