@@ -17,9 +17,7 @@ module_files = \
 testserver_static_files = \
     tools/rdm/static/MIT-LICENSE.txt \
     tools/rdm/static/common.css \
-    tools/rdm/static/jquery-1.7.2.min.js \
     tools/rdm/static/jquery-ui-1.8.21.custom.css \
-    tools/rdm/static/jquery-ui-1.8.21.custom.min.js \
     tools/rdm/static/rdm_tests.js \
     tools/rdm/static/rdmtests.html \
     tools/rdm/static/ui.multiselect.css \

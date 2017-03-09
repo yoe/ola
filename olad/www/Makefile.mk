@@ -69,14 +69,6 @@ dist_img_DATA = \
     olad/www/new/img/light_bulb.png \
     olad/www/new/img/logo-mini.png \
     olad/www/new/img/logo.png
-dist_jquery_DATA = \
-    olad/www/new/libs/jquery/js/jquery.min.js
-dist_angularroute_DATA = \
-    olad/www/new/libs/angular-route/js/angular-route.min.js
-dist_angular_DATA = \
-    olad/www/new/libs/angular/js/angular.min.js
-dist_bootjs_DATA = \
-    olad/www/new/libs/bootstrap/js/bootstrap.min.js
 dist_bootfonts_DATA = \
     olad/www/new/libs/bootstrap/fonts/glyphicons-halflings-regular.eot \
     olad/www/new/libs/bootstrap/fonts/glyphicons-halflings-regular.svg \

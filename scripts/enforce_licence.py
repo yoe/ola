@@ -49,18 +49,12 @@ IGNORED_FILES = [
   'javascript/new-src/Gruntfile.js',
   'olad/www/new/js/app.min.js',
   'olad/www/new/js/app.min.js.map',
-  'olad/www/new/libs/jquery/js/jquery.min.js',
-  'olad/www/new/libs/angular-route/js/angular-route.min.js',
-  'olad/www/new/libs/angular/js/angular.min.js',
-  'olad/www/new/libs/bootstrap/js/bootstrap.min.js',
   'python/ola/PidStoreLocation.py',
   'python/ola/Version.py',
   'tools/ola_trigger/config.tab.cpp',
   'tools/ola_trigger/config.tab.h',
   'tools/ola_trigger/lex.yy.cpp',
   'tools/rdm/DataLocation.py',
-  'tools/rdm/static/jquery-1.7.2.min.js',
-  'tools/rdm/static/jquery-ui-1.8.21.custom.min.js',
   'tools/rdm/static/ui.multiselect.js',
 ]
 
