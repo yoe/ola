@@ -1,3 +1,10 @@
+ola (0.10.3.nojsmin-2) UNRELEASED; urgency=medium
+
+  * Fix symlink target to point to a .js file rather than a .sj one (whoops);
+    Closes: #857399.
+
+ -- Wouter Verhelst <wouter@debian.org>  Wed, 15 Mar 2017 15:46:48 +0100
+
 ola (0.10.3.nojsmin-1) unstable; urgency=medium
 
   * Drop all minified javascript, and repackage as a 'nojsmin' tarball.
