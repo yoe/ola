@@ -229,3 +229,4 @@ javascript/new-src/node_modules
 .autotools
 .cproject
 .settings
+debian/patches
