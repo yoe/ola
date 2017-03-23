@@ -1,3 +1,9 @@
+ola (0.10.3.nojsmin-2~bpo8+1) jessie-backports; urgency=medium
+
+  * Reupload to jessie-backports
+
+ -- Wouter Verhelst <wouter@debian.org>  Thu, 23 Mar 2017 13:35:44 +0100
+
 ola (0.10.3.nojsmin-2) unstable; urgency=medium
 
   * Fix symlink target to point to a .js file rather than a .sj one (whoops);
