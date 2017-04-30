@@ -1,6 +1,7 @@
 ola (0.10.3.nojsmin-2~bpo8+1) jessie-backports; urgency=medium
 
   * Reupload to jessie-backports
+  * Loosen dependency on libmicrohttpd-dev, since it's not needed for jessie
 
  -- Wouter Verhelst <wouter@debian.org>  Thu, 23 Mar 2017 13:35:44 +0100
 
