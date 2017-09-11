@@ -1,6 +1,8 @@
 ola (0.10.5-1) unstable; urgency=low
 
   * New upstream release
+    - Fixes build with C++11 and cppunit 1.14; Closes: #862128.
+    - Fixes build with GCC 7; Closes: #853583.
 
  -- Simon Newton <nomis52@gmail.com>  Mon, 17 Jul 2017 23:58:00 +0100
 
