@@ -1,4 +1,13 @@
-ola (0.10.5-1) unstable; urgency=low
+ola (0.10.5.nojsmin-2) unstable; urgency=medium
+
+  * debian/control: add multi-arch hints
+  * debian/control: since rdm_model_collector.py.1.gz was moved from ola
+    to ola-rdm-tests, add a Replaces: header so upgrades work more
+    smoothly
+
+ -- Wouter Verhelst <wouter@debian.org>  Mon, 11 Sep 2017 08:43:18 +0200
+
+ola (0.10.5.nojsmin-1) unstable; urgency=low
 
   * New upstream release
     - Fixes build with C++11 and cppunit 1.14; Closes: #862128.
