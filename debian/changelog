@@ -1,3 +1,9 @@
+ola (0.10.5.nojsmin-3) UNRELEASED; urgency=medium
+
+  * debian/ola-rdm-tests.links: add symlink to jquery-ui.css
+
+ -- Wouter Verhelst <wouter@debian.org>  Thu, 28 Sep 2017 13:55:50 +0200
+
 ola (0.10.5.nojsmin-2) unstable; urgency=medium
 
   * debian/control: add multi-arch hints

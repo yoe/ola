@@ -1,2 +1,3 @@
 usr/share/javascript/jquery/jquery.min.js usr/share/ola/rdm-server/jquery.min.js
 usr/share/javascript/jquery-ui/jquery-ui.min.js usr/share/ola/rdm-server/jquery-ui.min.js
+usr/share/javascript/jquery-ui/themes/base/jquery-ui.css usr/share/ola/rdm-server/jquery-ui.css
