@@ -1,5 +1,8 @@
 language: cpp
-sudo: false
+# Default to the fully visualised "sudo" GCE environments, as they are faster for longer running jobs. We don't actually need sudo
+sudo: required
+# Use the latest Travis images since they are more up to date than the stable release.
+group: edge
 script:
  - "bash -ex .travis-ci.sh"
 
@@ -37,25 +40,25 @@ matrix:
   fast_finish: true
   include:
     - os: osx
-      osx_image: xcode8.3
+      osx_image: xcode9.2
       compiler: clang
       env:
       - TASK='compile'
       - CPPUNIT='1.13'
     - os: osx
-      osx_image: xcode8.3
+      osx_image: xcode9.2
       compiler: clang
       env:
       - TASK='compile'
       - CPPUNIT='1.14'
     - os: osx
-      osx_image: xcode8.3
+      osx_image: xcode9.2
       compiler: gcc
       env:
       - TASK='compile'
       - CPPUNIT='1.13'
     - os: osx
-      osx_image: xcode8.3
+      osx_image: xcode9.2
       compiler: gcc
       env:
       - TASK='compile'
@@ -107,6 +110,8 @@ matrix:
            - ubuntu-toolchain-r-test
     - os: linux
       dist: trusty
+      # Short duration job, use the container/without sudo image as it boots faster
+      sudo: false
       env: TASK='doxygen'
       addons:
         apt:
@@ -118,6 +123,8 @@ matrix:
            - ubuntu-toolchain-r-test
     - os: linux
       dist: trusty
+      # Short duration job, use the container/without sudo image as it boots faster
+      sudo: false
       env: TASK='lint'
       addons:
         apt:
@@ -125,6 +132,8 @@ matrix:
            - *core_build
     - os: linux
       dist: trusty
+      # Short duration job, use the container/without sudo image as it boots faster
+      sudo: false
       env: TASK='check-licences'
       addons:
         apt:
@@ -132,12 +141,46 @@ matrix:
            - *core_build
     - os: linux
       dist: trusty
+      # Short duration job, would use the container/without sudo image as it boots faster, but we need a backported lintian, so don't
+      sudo: required
+      env: TASK='spellintian'
+      addons:
+        apt:
+          packages:
+           - *core_build
+           - moreutils
+    - os: linux
+      dist: trusty
+      # Short duration job, would use the container/without sudo image as it boots faster, but we need a backported lintian, so don't
+      sudo: required
+      env: TASK='spellintian-duplicates'
+      addons:
+        apt:
+          packages:
+           - *core_build
+           - moreutils
+    - os: linux
+      dist: trusty
+      # Short duration job, use the container/without sudo image as it boots faster
+      sudo: false
+      env: TASK='codespell'
+      addons:
+        apt:
+          packages:
+           - *core_build
+           - moreutils
+    - os: linux
+      dist: trusty
+      # Short duration job, use the container/without sudo image as it boots faster
+      sudo: false
       env: TASK='jshint'
       addons:
         apt:
           packages:
     - os: linux
       dist: trusty
+      # Short duration job, use the container/without sudo image as it boots faster
+      sudo: false
       env: TASK='flake8'
       addons:
         apt:
@@ -152,6 +195,15 @@ matrix:
       dist: trusty
       compiler: gcc
       env: TASK='coverity'
+    - os: linux
+      dist: trusty
+      env: TASK='spellintian'
+    - os: linux
+      dist: trusty
+      env: TASK='spellintian-duplicates'
+    - os: linux
+      dist: trusty
+      env: TASK='codespell'
 
 env:
   global:
@@ -191,6 +243,7 @@ install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pip install --user numpy; fi
   - if [ "$TASK" = "coverage" ]; then pip install --user cpp-coveralls; fi
   - if [ "$TASK" = "flake8" ]; then pip install --user flake8; fi
+  - if [ "$TASK" = "codespell" ]; then pip install --user git+https://github.com/lucasdemarchi/codespell.git; fi
   - if [ "$TASK" = "jshint" ]; then npm install -g grunt-cli; fi
 
 before_install:
@@ -210,6 +263,7 @@ before_install:
  - if [ "$TRAVIS_OS_NAME" == "linux" -a "$CXX" = "clang++" ]; then export CXX="clang++-5.0" CC="clang-5.0"; fi
 #Report the compiler version
  - $CXX --version
+ - if [ "$TASK" == "spellintian" -o "$TASK" == "spellintian-duplicates" ]; then sudo add-apt-repository ppa:waja/trusty-backports -y; sudo apt-get update -qq; sudo apt-get install lintian -y; fi # Install a late enough lintian
 
 after_failure:
   - cat ${TRAVIS_BUILD_DIR}/ola-*/_build/sub/test-suite.log

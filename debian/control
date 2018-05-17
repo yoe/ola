@@ -1,5 +1,5 @@
 Source: ola
-Priority: extra
+Priority: optional
 Maintainer: Wouter Verhelst <wouter@debian.org>
 Uploaders: RenZO <renzo@imaginux.com>
 Build-Depends: debhelper (>= 9), autotools-dev, dh-autoreconf, bash-completion, libcppunit-dev, bison, flex, pkg-config, uuid-dev, python, python-protobuf, libprotobuf-dev, protobuf-compiler, libprotoc-dev, libusb-1.0-0-dev, libftdi-dev, liblo-dev, libmicrohttpd-dev (>= 0.9.44+dfsg-1), libclosure-compiler-java, libncurses5-dev, python-numpy
@@ -8,6 +8,7 @@ Section: libs
 Vcs-Git: https://github.com/yoe/ola
 Vcs-browser: https://github.com/yoe/ola
 Homepage: https://www.openlighting.org/
+Testsuite: autopkgtest
 
 Package: libola-dev
 Section: libdevel
