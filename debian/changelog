@@ -5,6 +5,8 @@ ola (0.10.7.nojsmin-1) UNRELEASED; urgency=medium
     instead of libftdi-dev. Closes: #810374
   * cherry-pick 755bee544032847508a8f5af2b0047dff5bd6dc6 from upstream
     to include support for protobuf 3.5. Closes: #900436.
+  * debian/tests/control: add two more tests that check libola-dev
+    functionality
 
  -- Wouter Verhelst <wouter@debian.org>  Fri, 07 Sep 2018 15:34:17 +0200
 
