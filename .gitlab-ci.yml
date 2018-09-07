@@ -1,15 +1,17 @@
 before_script:
 - apt-get update
-- apt-get -y install devscripts autoconf automake autopkgtest
+- apt-get -y install devscripts autoconf automake autopkgtest adduser fakeroot sudo
 - autoreconf -f -i
 - mk-build-deps -t "apt-get -y -o Debug::pkgProblemResolver=yes --no-install-recommends" -i -r
+- adduser --disabled-password --gecos "" builduser
+- chown -R builduser:builduser .
 build_testing:
   image: debian:testing
   script:
-  - dpkg-buildpackage -b
+  - sudo -u builduser dpkg-buildpackage -b -rfakeroot
   - autopkgtest -B ../*deb ./ -- null
 build_unstable:
   image: debian:sid
   script:
-  - dpkg-buildpackage -b
+  - sudo -u builduser dpkg-buildpackage -b -rfakeroot
   - autopkgtest -B ../*deb ./ -- null
