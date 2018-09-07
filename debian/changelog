@@ -1,4 +1,4 @@
-ola (0.10.7.nojsmin-1) UNRELEASED; urgency=medium
+ola (0.10.7.nojsmin-1) unstable; urgency=medium
 
   * debian/control: libola-dev: depend on libprotobuf-dev. Closes: #902143
   * debian/control: after upstream added support, depend on libftdi1-dev
@@ -8,7 +8,7 @@ ola (0.10.7.nojsmin-1) UNRELEASED; urgency=medium
   * debian/tests/control: add two more tests that check libola-dev
     functionality
 
- -- Wouter Verhelst <wouter@debian.org>  Fri, 07 Sep 2018 15:34:17 +0200
+ -- Wouter Verhelst <wouter@debian.org>  Fri, 07 Sep 2018 20:33:31 +0200
 
 ola (0.10.7-1) unstable; urgency=low
 
