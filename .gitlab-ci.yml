@@ -5,13 +5,14 @@ before_script:
 - mk-build-deps -t "apt-get -y -o Debug::pkgProblemResolver=yes --no-install-recommends" -i -r
 - adduser --disabled-password --gecos "" builduser
 - chown -R builduser:builduser .
+- chown builduser:builduser ..
 build_testing:
   image: debian:testing
   script:
   - sudo -u builduser dpkg-buildpackage -b -rfakeroot
-  - autopkgtest -B ../*deb ./ -- null
+  - autopkgtest ../*ges -- null
 build_unstable:
   image: debian:sid
   script:
   - sudo -u builduser dpkg-buildpackage -b -rfakeroot
-  - autopkgtest -B ../*deb ./ -- null
+  - autopkgtest ../*ges -- null
