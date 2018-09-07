@@ -1,3 +1,9 @@
+ola (0.10.6.nojsmin-2) UNRELEASED; urgency=medium
+
+  * debian/control: libola-dev: depend on libprotobuf-dev. Closes: #902143
+
+ -- Wouter Verhelst <wouter@debian.org>  Fri, 07 Sep 2018 14:34:15 +0200
+
 ola (0.10.6.nojsmin-1) unstable; urgency=medium
 
   * debian/control: point Vcs-* fields to salsa (from github, oops)
