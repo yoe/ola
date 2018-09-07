@@ -1,3 +1,33 @@
+13/7/2018 ola-0.10.7
+ Features:
+ * Allow multiple KiNet ports to be patched to the same universe #1414
+ * Allow multiple FTDI ports to be patched to the same universe
+ * Support libftdi1 as well as libftdi0 in FTDI DMX #1012 Debian #810374
+ * Support FTDI DMX via libftdi1 on Windows
+
+ RDM Tests:
+ * Fix a bug in the RDM tests when a responder supports sensor PIDs #1388
+ * Fix a bug in imports for rdm_responder_test.py
+
+ Bugs:
+ * Fix the build on Windows
+ * Entire codebase now passes codespell testing
+ * Fix a Python 3 bug in the API
+ * Fix a few longstanding bugs in the Python ola_rdm_discover
+ * Correct the OSC config option name for output format in the documentation
+ * Use top_builddir in more places in the build
+ * Use libusb_set_option where available
+ * Fix the udev rules
+ * Downstream Debian fixes
+ * Fix an incorrect response if we have the sensor PIDs but no sensors
+ * Stop trying to build opendmx kernel plugin on Windows
+ * Prefer Avahi over Bonjour for our DiscoveryAgent, in case the Bonjour
+   version is actually just Avahi's compatibility layer
+ * Clean up the libolaserver pkg-config file
+
+ Internal:
+ * Various minor log formatting tidying up
+
 07/01/2018 ola-0.10.6
  Bugs:
  * Renamed fempto(sic) to femto in the RDM code (C++ and Python)
@@ -6,6 +36,7 @@
  * Fix a man page typo
  * Fix a longstanding copy-paste typo in the Python client's RegisterUniverse
    function
+ * Increment the Transaction Number for each Art-Net RDM packet #189
  * Fix lots of minor documentation spelling errors found by spellintian and
    codespell
  * Renamed protocol convertor(sic) to protocol converter in the RDM code (C++
@@ -806,7 +837,7 @@ Documentation:
   Improved USB Pro handling
   Added port priorities & multi source merging
   TX support for the DMX-TRI
-  Support for the Ardiuno RGB Mixer
+  Support for the Arduino RGB Mixer
   DSCP for E1.31
   Support for using the OSSP uuid library
   Removal of run-time loadable plugins.

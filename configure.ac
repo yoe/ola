@@ -101,7 +101,7 @@ AC_CHECK_HEADERS([arpa/inet.h bits/sockaddr.h fcntl.h float.h limits.h \
 AC_CHECK_HEADERS([asm/termios.h assert.h dlfcn.h endian.h execinfo.h \
                   linux/if_packet.h math.h net/ethernet.h stropts.h \
                   sys/param.h sys/types.h sys/uio.h sysexits.h])
-AC_CHECK_HEADERS([winsock2.h])
+AC_CHECK_HEADERS([winsock2.h winerror.h])
 AC_CHECK_HEADERS([random])
 
 # This needs stuff in sys/param.h on OpenBSD
@@ -214,6 +214,10 @@ LT_INIT([win32-dll])
 
 # Decide if we're building on Windows early on.
 AM_CONDITIONAL([USING_WIN32], [test "x$host_os" = xmingw32])
+have_not_win32="yes"
+if test "x$host_os" = xmingw32; then
+  have_not_win32="no"
+fi
 
 # Epoll
 AX_HAVE_EPOLL(
@@ -612,19 +616,33 @@ AC_ARG_ENABLE(
   [ja-rule],
   [AS_HELP_STRING([--enable-ja-rule], [Build the Ja Rule test tool])])
 
-# libftdi: this requires libusb-0.1.4+ don't know if I should also
+# libftdi0: this requires libusb-0.1.4+ don't know if I should also
 # check for it, since the libusb check above is not for 0.1.4 but for libusb-1
 AC_ARG_ENABLE(
   [libftdi],
   [AS_HELP_STRING([--disable-libftdi],
-                  [Avoid using libftdi even if it exists])])
+                  [Avoid using libftdi0 or libftdi1 even if either exists])])
 
-have_libftdi="no"
+have_libftdi0="no"
 AS_IF([test "x$enable_libftdi" != xno],
-      [PKG_CHECK_MODULES([libftdi], [libftdi >= 0.18], [have_libftdi="yes"],
+      [PKG_CHECK_MODULES([libftdi0], [libftdi >= 0.18], [have_libftdi0="yes"],
                          [true])])
+AM_CONDITIONAL([HAVE_LIBFTDI0], [test "x$have_libftdi0" = xyes])
+AS_IF([test "x$have_libftdi0" = xyes],
+      [AC_DEFINE([HAVE_LIBFTDI0], [1], [define if libftdi0 is installed])])
+have_libftdi1="no"
+AS_IF([test "x$enable_libftdi" != xno],
+      [PKG_CHECK_MODULES([libftdi1], [libftdi1 >= 1.0], [have_libftdi1="yes"],
+                         [true])])
+AM_CONDITIONAL([HAVE_LIBFTDI1], [test "x$have_libftdi1" = xyes])
+AS_IF([test "x$have_libftdi1" = xyes],
+      [AC_DEFINE([HAVE_LIBFTDI1], [1], [define if libftdi1 is installed])])
+have_libftdi="no"
+if test "x$have_libftdi0" = xyes || test "x$have_libftdi1" = xyes; then
+  have_libftdi="yes"
+fi
 AS_IF([test "x$have_libftdi" = xyes],
-      [AC_DEFINE([HAVE_LIBFTDI], [1], [define if libftdi is installed])])
+      [AC_DEFINE([HAVE_LIBFTDI], [1], [define if libftdi0 or libftdi1 is installed])])
 
 # libusb
 AC_ARG_ENABLE(
@@ -652,8 +670,17 @@ AS_IF([test "x$enable_libusb" != xno],
                          [have_libusb_hotplug_api="yes"], [true])])
 AS_IF([test "x$have_libusb_hotplug_api" = xyes],
       [AC_DEFINE([HAVE_LIBUSB_HOTPLUG_API], [1],
-                 [define if libusb is installed and the libusb])])
+                 [define if libusb is installed and the libusb hotplug API is available])])
 AM_CONDITIONAL([HAVE_LIBUSB_HOTPLUG_API], [test "x$have_libusb_hotplug_api" = xyes])
+
+have_libusb_set_option="no"
+AS_IF([test "x$enable_libusb" != xno],
+      [PKG_CHECK_MODULES([libusb_set_option], [libusb-1.0 >= 1.0.22],
+                         [have_libusb_set_option="yes"], [true])])
+AS_IF([test "x$have_libusb_set_option" = xyes],
+      [AC_DEFINE([HAVE_LIBUSB_SET_OPTION], [1],
+                 [define if libusb is installed and libusb_set_option is available])])
+AM_CONDITIONAL([HAVE_LIBUSB_SET_OPTION], [test "x$have_libusb_set_option" = xyes])
 
 # UART direct plugin
 AC_ARG_ENABLE(
@@ -825,7 +852,7 @@ PLUGIN_SUPPORT(gpio, USE_GPIO)
 PLUGIN_SUPPORT(karate, USE_KARATE)
 PLUGIN_SUPPORT(kinet, USE_KINET)
 PLUGIN_SUPPORT(milinst, USE_MILINST)
-PLUGIN_SUPPORT(opendmx, USE_OPENDMX)
+PLUGIN_SUPPORT(opendmx, USE_OPENDMX, [$have_not_win32])
 PLUGIN_SUPPORT(openpixelcontrol, USE_OPENPIXELCONTROL)
 PLUGIN_SUPPORT(osc, USE_OSC, [$have_liblo])
 PLUGIN_SUPPORT(pathport, USE_PATHPORT)

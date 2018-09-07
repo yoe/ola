@@ -53,7 +53,7 @@ class InvalidPidFormat(Error):
 
 
 class PidStructureException(Error):
-  """Raised if the PID structure isn't vaild."""
+  """Raised if the PID structure isn't valid."""
 
 
 class ArgsValidationError(Error):
@@ -61,7 +61,7 @@ class ArgsValidationError(Error):
 
 
 class UnpackException(Error):
-  """Raised if we can't unpack the data corectly."""
+  """Raised if we can't unpack the data correctly."""
 
 
 class MissingPLASAPIDs(Error):
