@@ -6,8 +6,8 @@ before_script:
 build_testing:
   image: debian:testing
   script:
-  - dpkg-buildpackage
+  - dpkg-buildpackage -b
 build_unstable:
   image: debian:sid
   script:
-  - dpkg-buildpackage
+  - dpkg-buildpackage -b
