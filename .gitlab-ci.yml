@@ -1,0 +1,13 @@
+before_script:
+- apt-get update
+- apt-get -y install devscripts autoconf automake
+- autoreconf -f -i
+- mk-build-deps -t "apt-get -y -o Debug::pkgProblemResolver=yes --no-install-recommends" -i -r
+build_testing:
+  image: debian:testing
+  script:
+  - dpkg-buildpackage
+build_unstable:
+  image: debian:sid
+  script:
+  - dpkg-buildpackage
