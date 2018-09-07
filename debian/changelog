@@ -1,6 +1,8 @@
 ola (0.10.7.nojsmin-1) UNRELEASED; urgency=medium
 
   * debian/control: libola-dev: depend on libprotobuf-dev. Closes: #902143
+  * debian/control: after upstream added support, depend on libftdi1-dev
+    instead of libftdi-dev. Closes: #810374
 
  -- Wouter Verhelst <wouter@debian.org>  Fri, 07 Sep 2018 14:34:15 +0200
 
