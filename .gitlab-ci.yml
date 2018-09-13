@@ -16,6 +16,7 @@ stages:
     - built
   script:
   - sudo -u builduser dpkg-buildpackage -b -rfakeroot
+  after_script:
   - mkdir built
   - mv ../*deb ../*ges built/
 .test: &test
