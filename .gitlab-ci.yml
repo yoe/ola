@@ -18,7 +18,7 @@ stages:
   - sudo -u builduser dpkg-buildpackage -b -rfakeroot
   after_script:
   - mkdir built
-  - mv ../*buildinfo ../*deb ../*ges built/
+  - dcmd mv ../*ges built/
 .test: &test
   before_script:
   - apt-get update
