@@ -22,7 +22,7 @@ stages:
   before_script:
   - apt-get update
   - apt-get -y install autopkgtest
-  stage: test
+  stage: autopkgtest
   script:
   - autopkgtest built/*ges -- null
 build:testing:
