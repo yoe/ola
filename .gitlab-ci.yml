@@ -1,18 +1,38 @@
-before_script:
-- apt-get update
-- apt-get -y install devscripts autoconf automake autopkgtest adduser fakeroot sudo
-- autoreconf -f -i
-- mk-build-deps -t "apt-get -y -o Debug::pkgProblemResolver=yes --no-install-recommends" -i -r
-- adduser --disabled-password --gecos "" builduser
-- chown -R builduser:builduser .
-- chown builduser:builduser ..
-build_testing:
+.build: &build
+  before_script:
+  - apt-get update
+  - apt-get -y install devscripts autoconf automake adduser fakeroot sudo
+  - autoreconf -f -i
+  - mk-build-deps -t "apt-get -y -o Debug::pkgProblemResolver=yes --no-install-recommends" -i -r
+  - adduser --disabled-password --gecos "" builduser
+  - chown -R builduser:builduser .
+  - chown builduser:builduser ..
+  artifacts:
+    paths:
+    - built
+  script:
+  - sudo -u builduser dpkg-buildpackage -b -rfakeroot
+  - mkdir built
+  - mv ../*deb ../*ges built/
+.test: &test
+  before_script:
+  - apt-get update
+  - apt-get -y install autopkgtest
+  script:
+  - autopkgtest built/*ges -- null
+build:testing:
+  <<: *build
   image: debian:testing
-  script:
-  - sudo -u builduser dpkg-buildpackage -b -rfakeroot
-  - autopkgtest ../*ges -- null
-build_unstable:
+build:unstable:
+  <<: *build
   image: debian:sid
-  script:
-  - sudo -u builduser dpkg-buildpackage -b -rfakeroot
-  - autopkgtest ../*ges -- null
+test:testing:
+  <<: *test
+  dependencies:
+  - build:testing
+  image: debian:testing
+test:unstable:
+  <<: *test
+  dependencies:
+  - build:unstable
+  image: debian:sid
