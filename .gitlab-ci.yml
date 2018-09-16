@@ -4,8 +4,7 @@ stages:
 .build: &build
   before_script:
   - apt-get update
-  - apt-get -y install devscripts autoconf automake adduser fakeroot sudo
-  - autoreconf -f -i
+  - apt-get -y install devscripts adduser fakeroot sudo
   - mk-build-deps -t "apt-get -y -o Debug::pkgProblemResolver=yes --no-install-recommends" -i -r
   - adduser --disabled-password --gecos "" builduser
   - chown -R builduser:builduser .
