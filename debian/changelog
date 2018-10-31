@@ -1,3 +1,9 @@
+ola (0.10.3.nojsmin-2+deb9u1) stretch; urgency=medium
+
+  * Fix typo in /etc/init.d/rdm_test_server; Closes: #876251.
+
+ -- Wouter Verhelst <wouter@debian.org>  Wed, 31 Oct 2018 17:02:06 +0100
+
 ola (0.10.3.nojsmin-2) unstable; urgency=medium
 
   * Fix symlink target to point to a .js file rather than a .sj one (whoops);
