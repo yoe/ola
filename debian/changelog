@@ -1,6 +1,8 @@
 ola (0.10.3.nojsmin-2+deb9u1) stretch; urgency=medium
 
   * Fix typo in /etc/init.d/rdm_test_server; Closes: #876251.
+  * Fix filename for jquery in rdm test server static HTML files;
+    Closes: #912713.
 
  -- Wouter Verhelst <wouter@debian.org>  Wed, 31 Oct 2018 17:02:06 +0100
 
