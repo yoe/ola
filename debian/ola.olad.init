@@ -18,7 +18,6 @@ DESC="OLA daemon"
 USER=olad
 LOG_LEVEL=3
 DAEMON_ARGS="--syslog --log-level 3  --config-dir /etc/ola"
-CONFIG_DIR="/var/lib/ola/conf"
 
 # Reads config file (will override defaults above)
 [ -r /etc/default/ola ] && . /etc/default/ola
