@@ -1,8 +1,8 @@
-ola (0.10.7.nojsmin-2) UNRELEASED; urgency=medium
+ola (0.10.7.nojsmin-2) unstable; urgency=medium
 
   * Reorder build command line in autopkgtest; Closes: #913704.
 
- -- Wouter Verhelst <wouter@debian.org>  Wed, 14 Nov 2018 23:44:42 +0100
+ -- Wouter Verhelst <wouter@debian.org>  Sun, 09 Jun 2019 16:38:40 +0200
 
 ola (0.10.7.nojsmin-1) unstable; urgency=medium
 
