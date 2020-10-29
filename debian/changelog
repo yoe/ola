@@ -1,3 +1,10 @@
+ola (0.10.7.nojsmin-3) UNRELEASED; urgency=medium
+
+  * ola-python, ola-rdm-tests: switch to python3, from python2. Closes:
+    #937186.
+
+ -- Wouter Verhelst <wouter@debian.org>  Fri, 30 Oct 2020 00:17:42 +0200
+
 ola (0.10.7.nojsmin-2) unstable; urgency=medium
 
   * Reorder build command line in autopkgtest; Closes: #913704.
