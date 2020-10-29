@@ -1,5 +1,8 @@
 ola (0.10.7.nojsmin-3) UNRELEASED; urgency=medium
 
+  * Pull new commits from upstream:
+    - Fixes FTBFS with recent protobuf; Closes: #944927
+    - Fixes FTBFS with recent gcc; Closes: #925793
   * ola-python, ola-rdm-tests: switch to python3, from python2. Closes:
     #937186.
 
